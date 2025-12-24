@@ -20,7 +20,7 @@ public class BasePage {
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.fluentWait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(15))
+                .withTimeout(Duration.ofSeconds(7))
                 .pollingEvery(Duration.ofMillis(300))
                 .ignoring(NoSuchElementException.class)
                 .ignoring(StaleElementReferenceException.class)

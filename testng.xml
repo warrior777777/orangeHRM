@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="OrangeHRM_Comprehensive_Suite" verbose="1">
+<suite name="OrangeHRM_Revolutionary_E2E_Suite" verbose="1">
 
     <parameter name="browser" value="edge"/>
 
-    <test name="Step1_Core_Admin" preserve-order="true">
+    <test name="Step1_Admin_Foundation" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.LoginTest"/>
             <class name="project_orangehrm.Test.AdminJobTest"/>
@@ -15,45 +15,45 @@
         </classes>
     </test>
 
-    <test name="Step2_PIM_Foundation" preserve-order="true">
+    <test name="Step2_PIM_Recruitment_Core" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.PIM_Configuration_Test"/>
             <class name="project_orangehrm.Test.PIM_Employee_Test"/>
             <class name="project_orangehrm.Test.PIM_EmployeeDetails_Test"/>
+            <class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/>
+            <class name="project_orangehrm.Test.Recruitment_Candidate_E2E_Test"/>
+            <class name="project_orangehrm.Test.Recruitment_Search_And_Data_Test"/>
+            <class name="project_orangehrm.Test.Recruitment_Actions_Test"/>
         </classes>
     </test>
 
-    <test name="Step3_Operational_Flow" parallel="classes" thread-count="4">
+    <test name="Step3_Operational_Activities" parallel="classes" thread-count="4">
         <classes>
-            <class name="project_orangehrm.Test.Leave_Configuration_Test"/>
-            <class name="project_orangehrm.Test.Leave_Entitlements_Test"/>
-            <class name="project_orangehrm.Test.Leave_Operations_Test"/>
             <class name="project_orangehrm.Test.Time_Configuration_Test"/>
             <class name="project_orangehrm.Test.Time_Attendance_Test"/>
             <class name="project_orangehrm.Test.Time_Timesheets_Test"/>
             <class name="project_orangehrm.Test.Time_ProjectInfo_Test"/>
             <class name="project_orangehrm.Test.Time_BusinessLogic_Test"/>
+            <class name="project_orangehrm.Test.Leave_Configuration_Test"/>
+            <class name="project_orangehrm.Test.Leave_Entitlements_Test"/>
+            <class name="project_orangehrm.Test.Leave_Operations_Test"/>
             <class name="project_orangehrm.Test.Claim_Configuration_Test"/>
             <class name="project_orangehrm.Test.Claim_Operations_Test"/>
             <class name="project_orangehrm.Test.Claim_Advanced_Test"/>
         </classes>
     </test>
 
-    <test name="Step4_Talent_And_Reports" parallel="classes" thread-count="4">
+    <test name="Step4_Performance_And_Engagement" parallel="classes" thread-count="4">
         <classes>
-            <class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_Search_And_Data_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_Actions_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_Candidate_E2E_Test"/>
             <class name="project_orangehrm.Test.Performance_Configuration_Test"/>
             <class name="project_orangehrm.Test.Performance_Reviews_Test"/>
             <class name="project_orangehrm.Test.Performance_Evaluation_Test"/>
-            <class name="project_orangehrm.Test.Dashboard_Widgets_Test"/>
-            <class name="project_orangehrm.Test.Dashboard_UserActions_Test"/>
-            <class name="project_orangehrm.Test.Dashboard_Advanced_Test"/>
             <class name="project_orangehrm.Test.Buzz_Newsfeed_Test"/>
             <class name="project_orangehrm.Test.Buzz_Features_Test"/>
             <class name="project_orangehrm.Test.Buzz_Media_Test"/>
+            <class name="project_orangehrm.Test.Dashboard_Widgets_Test"/>
+            <class name="project_orangehrm.Test.Dashboard_UserActions_Test"/>
+            <class name="project_orangehrm.Test.Dashboard_Advanced_Test"/>
             <class name="project_orangehrm.Test.PIM_Reports_Test"/>
             <class name="project_orangehrm.Test.Leave_Reports_Test"/>
             <class name="project_orangehrm.Test.Time_Reports_Test"/>
@@ -61,7 +61,7 @@
         </classes>
     </test>
 
-    <test name="Step5_Maintenance_Safety" preserve-order="true">
+    <test name="Step5_Maintenance_And_Security" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.Maintenance_Authentication_Test"/>
             <class name="project_orangehrm.Test.Maintenance_AccessRecords_Test"/>

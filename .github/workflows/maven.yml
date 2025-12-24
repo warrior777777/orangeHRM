@@ -1,4 +1,4 @@
-name: OrangeHRM
+name: OrangeHRM Strategic Execution Suite
 
 on:
   push:
@@ -15,14 +15,9 @@ permissions:
   id-token: write
 
 jobs:
-  test:
-    name: Run ${{ matrix.test-step }}
+  foundation:
+    name: Foundation (Admin & PIM)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        test-step: ["Step1_Core_Admin", "Step2_PIM_Foundation", "Step3_Operational_Flow", "Step4_Talent_And_Reports", "Step5_Maintenance_Safety"]
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -33,10 +28,43 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-        env:
-          MAVEN_OPTS: '-Xmx2g -XX:+TieredCompilation'
 
-      - name: Run Tests with 4 Threads
+      - name: Run Foundation Steps
+        run: |
+          mvn test -B \
+            -Dsurefire.suiteXmlFiles=testng.xml \
+            -Dtestnames=Step1_Core_Admin,Step2_PIM_Foundation \
+            -Dheadless=true \
+            -Dmaven.test.failure.ignore=true
+
+      - name: Upload Foundation Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-foundation
+          path: target/allure-results
+
+
+  operations:
+    needs: foundation
+    name: Run ${{ matrix.test-step }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test-step: ["Step3_Operational_Flow", "Step4_Talent_And_Reports", "Step5_Maintenance_Safety"]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Parallel Group (4 Threads)
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
@@ -44,54 +72,56 @@ jobs:
             -Dheadless=true \
             -Dparallel=classes \
             -DthreadCount=4 \
-            -Dmaven.test.failure.ignore=true 
+            -Dmaven.test.failure.ignore=true
 
-      - name: Upload Results per Step
+      - name: Upload Step Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.test-step }}
           path: target/allure-results
-          retention-days: 1
 
   report:
     name: Aggregate and Deploy Report
-    needs: test
+    needs: [foundation, operations]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Download All Step Results
+      - name: Download All Results
         uses: actions/download-artifact@v4
         with:
           path: all-results
           pattern: allure-results-*
           merge-multiple: true
 
-      - name: Download Allure History from GitHub Pages
+      - name: Download Allure History
         uses: actions/checkout@v4
+        if: always()
         continue-on-error: true
         with:
           ref: gh-pages
-          path: gh-pages-history
+          path: gh-pages
 
       - name: Merge Results and History
         run: |
           mkdir -p target/allure-results
           cp -r all-results/* target/allure-results/
-          [ -d gh-pages-history/history ] && cp -r gh-pages-history/history target/allure-results/ || echo "No history found"
+          [ -d gh-pages/history ] && cp -r gh-pages/history target/allure-results/ || echo "No history found"
 
       - name: Generate Final Allure Report
         uses: simple-elf/allure-report-action@master
+        if: always()
         with:
           allure_results: target/allure-results
-          gh_pages: gh-pages
-          allure_report: allure-report
+          allure_history: gh-pages
+          keep_reports: 30
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
