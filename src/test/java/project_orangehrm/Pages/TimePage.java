@@ -10,6 +10,8 @@ public class TimePage extends CommonPage {
     private final By PUNCH_OUT_BTN = By.xpath("//button[normalize-space()='Out']");
     private final By VIEW_BTN = By.xpath("//button[normalize-space()='View']");
 
+    String DYNAMIC_GRID_CELL = "//div[contains(text(),'%s')]/ancestor::div[@class='oxd-sheet']//input[@placeholder='%s']";
+
     public TimePage(WebDriver driver) {
         super(driver);
     }
@@ -34,11 +36,8 @@ public class TimePage extends CommonPage {
         return this;
     }
 
-    public TimePage typeInTimesheetGrid(String projectName, String day, String hours) {
-        // Dynamic locator for timesheet grid cell
+    public TimePage typeInTimesheetGrid(String filed, String day, String hours) {
         String DYNAMIC_GRID_CELL = "//div[contains(text(),'%s')]/ancestor::div[@class='oxd-sheet']//input[@placeholder='%s']";
-        // Alternative approach: find by row and column index
-        // For now, we use a simplified approach
         return this;
     }
 

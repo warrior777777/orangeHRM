@@ -97,7 +97,6 @@ public class Admin_Qualifications_Test extends BaseTest {
     @Test(priority = 5, description = "TC05 - Verify Education Level Lifecycle: Create")
     public void verifyEducation_Lifecycle_Success() {
         String eduLevel = "Master of Science";
-        String updatedEduLevel = "PhD in Computer Science";
         adminPage
                 .navigateToSection("Qualifications", "Education")
                 .clickToAdd()

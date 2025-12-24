@@ -31,7 +31,7 @@ public class Admin_Configuration_Test extends BaseTest {
     @Test(priority = 1, description = "TC01 - Verify Email Subscription Lifecycle: Add, Verify")
     public void verifyEmailSubscription_Lifecycle_Success() {
         String subscriberName = "Automation Subscriber";
-        String subscriberEmail = "auto_sub@test.com";
+        String subscriberEmail = "selenium@automated.com";
         adminPage
                 .navigateToSection("Configuration", "Email Subscriptions")
                 .clickToSubscribe("Leave Applications")
@@ -43,10 +43,10 @@ public class Admin_Configuration_Test extends BaseTest {
                 .verifyRecordExists(subscriberName);
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Email Subscription Lifecycle: Add, Verify, Edit, Delete")
+    @Test(priority = 2, description = "TC02 - Verify Email Subscription Lifecycle: Add, Verify, Edit, Delete")
     public void verifyEmailSubscription_Lifecycle_Edit() {
-        String subscriberName = "Automation Subscriber";
-        String subscriberEmail = "auto_sub@test.com";
+        String subscriberName = "Ai Subscriber";
+        String subscriberEmail = "auto_script@test.com";
         String subscriberEmailSec = "automation_sub@script.com";
         adminPage
                 .navigateToSection("Configuration", "Email Subscriptions")

@@ -322,8 +322,6 @@ public class AdminJobTest extends BaseTest {
 
     @Test(priority = 20, description = "TC20 - Verify error when creating a duplicate Work Shift")
     public void verifyWorkShift_DuplicateEntry_ShowError() {
-        String duplicateShift = "Standard Day";
-
         adminPage
                 .navigateToSection("Job", "Work Shifts")
                 .clickToAdd()
