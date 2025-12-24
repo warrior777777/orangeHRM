@@ -27,21 +27,12 @@ public class ClaimTestCleaning extends BaseTest {
                 .navigateToModule("Claim");
     }
 
-    @Test(priority = 1,description = "test1")
-    public void test1() {
+    @Test(priority = 1, description = "Cleanup Event - Global QA Summit 2025")
+    public void cleanUpEvent_GlobalQASummit2025() {
         claimPage
                 .navigateToSection("Configuration", "Events")
                 .verifyRecordExists("Global QA Summit 2025")
                 .deleteSpecificValue("Global QA Summit 2025")
-                .verifySuccessMessage();
-    }
-
-    @Test(priority = 2,description = "test2")
-    public void test2() {
-        claimPage
-                .navigateToSection("Configuration", "Expense Types")
-                .verifyRecordExists("Local Transport")
-                .deleteSpecificValue("Local Transport")
                 .verifySuccessMessage();
     }
 }

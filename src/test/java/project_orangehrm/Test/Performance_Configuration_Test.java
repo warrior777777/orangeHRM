@@ -96,10 +96,6 @@ public class Performance_Configuration_Test extends BaseTest {
                 .selectFromList()
                 .clickSave()
                 .verifySuccessMessage();
-        performancePage
-                .navigateToSection("Configure", "Trackers")
-                .deleteSpecificValue(trackerName)
-                .verifySuccessMessage();
     }
 
     @Test(priority = 4, description = "TC04 - Verify KPI Validation Errors")

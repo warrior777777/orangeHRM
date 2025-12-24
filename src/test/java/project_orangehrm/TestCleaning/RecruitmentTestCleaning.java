@@ -27,8 +27,8 @@ public class RecruitmentTestCleaning extends BaseTest {
     }
 
 
-    @Test(priority = 1, description = "test1")
-    public void test1() {
+    @Test(priority = 1, description = "Cleanup Candidate - E2E Candidate")
+    public void cleanUpCandidate_E2ECandidate() {
         recruitmentPage
                 .navigateToSection("Candidates")
                 .typeInDynamicField("Candidate Name","E2E")
@@ -38,8 +38,8 @@ public class RecruitmentTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 2, description = "test2")
-    public void test2() {
+    @Test(priority = 2, description = "Cleanup Candidate - Decline Candidate")
+    public void cleanUpCandidate_DeclineCandidate() {
         recruitmentPage
                 .navigateToSection("Candidates")
                 .typeInDynamicField("Candidate Name","Decline")
@@ -49,8 +49,8 @@ public class RecruitmentTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 3, description = "test3")
-    public void test3() {
+    @Test(priority = 3, description = "Cleanup Vacancy - Senior Java SDET")
+    public void cleanUpVacancy_SeniorJavaSDET() {
         recruitmentPage
                 .navigateToSection("Vacancies")
                 .clickAndSelectDropdown("Vacancy","Senior Java SDET")

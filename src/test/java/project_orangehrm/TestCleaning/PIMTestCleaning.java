@@ -29,8 +29,8 @@ public class PIMTestCleaning extends BaseTest {
     }
 
 
-    @Test(priority = 1, description = "test")
-    public void test1() {
+    @Test(priority = 1, description = "Cleanup Custom Field - Automation Badge ID")
+    public void cleanUpCustomField_AutomationBadgeID() {
         pimPage
                 .verifyPIMPage("PIM")
                 .navigateToSection("Configuration", "Custom Fields")
@@ -40,8 +40,8 @@ public class PIMTestCleaning extends BaseTest {
     }
 
 
-    @Test(priority = 2, description = "test2")
-    public void test2() {
+    @Test(priority = 2, description = "Cleanup Reporting Method - Weekly Scrum Report")
+    public void cleanUpReportingMethod_WeeklyScrumReport() {
         pimPage
                 .verifyPIMPage("PIM")
                 .navigateToSection("Configuration", "Reporting Methods")
@@ -51,8 +51,8 @@ public class PIMTestCleaning extends BaseTest {
     }
 
 
-    @Test(priority = 3, description = "test3")
-    public void test3() {
+    @Test(priority = 3, description = "Cleanup Termination Reason - Better Salary Opportunity")
+    public void cleanUpTerminationReason_BetterSalaryOpportunity() {
         pimPage
                 .verifyPIMPage("PIM")
                 .navigateToSection("Configuration", "Termination Reasons")
@@ -61,8 +61,8 @@ public class PIMTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 4, description = "test4")
-    public void test4() {
+    @Test(priority = 4, description = "Cleanup Employee - Script Automation Tester (ID: 77777)")
+    public void cleanUpEmployee_ScriptAutomationTester() {
         pimPage
                 .verifyPIMPage("PIM")
                 .navigateToSection("Employee")
@@ -74,8 +74,8 @@ public class PIMTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 7, description = "test4")
-    public void test7() {
+    @Test(priority = 5, description = "Cleanup Employee - Dev Sec Ops (ID: 0777)")
+    public void cleanUpEmployee_DevSecOps() {
         pimPage
                 .verifyPIMPage("PIM")
                 .navigateToSection("Employee")
@@ -87,8 +87,21 @@ public class PIMTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 4, description = "test5")
-    public void test5() {
+    @Test(priority = 6, description = "Cleanup Employee - Dev Ops Trem (ID: 0333)")
+    public void cleanUpEmployee_DevOpsTrem() {
+        pimPage
+                .verifyPIMPage("PIM")
+                .navigateToSection("Employee")
+                .typeInDynamicField("Employee Id", "0333")
+                .clickAndSelectDropdown("Include", "Past Employees Only")
+                .searchUser()
+                .verifyRecordExists("0333")
+                .deleteSpecificValue("0333")
+                .verifySuccessMessage();
+    }
+
+    @Test(priority = 7, description = "Cleanup Report - QA Employee Audit Report")
+    public void cleanUpReport_QAEmployeeAuditReport() {
         pimPage
                 .verifyPIMPage("PIM")
                 .navigateToSection("Reports")

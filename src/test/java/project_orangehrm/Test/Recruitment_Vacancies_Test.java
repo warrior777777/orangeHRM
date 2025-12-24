@@ -48,10 +48,6 @@ public class Recruitment_Vacancies_Test extends BaseTest {
                 .clickAndSelectDropdown("Job Title", jobTitle)
                 .searchUser()
                 .verifyRecordExists(vacancyName);
-        recruitmentPage
-                .deleteSpecificValue(vacancyName)
-                .verifySuccessMessage()
-                .verifyRecordDeleted(vacancyName);
     }
 
     @Test(priority = 2, description = "TC02 - Verify Vacancy Lifecycle: Create, Verify, Edit, Delete")

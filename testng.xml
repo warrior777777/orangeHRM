@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="OrangeHRM_Revolutionary_E2E_Suite" verbose="1">
+<suite name="OrangeHRM_E2E_Suite" verbose="1">
 
     <parameter name="browser" value="edge"/>
 
@@ -11,15 +11,20 @@
             <class name="project_orangehrm.Test.AdminOrganizationTest"/>
             <class name="project_orangehrm.Test.Admin_Qualifications_Test"/>
             <class name="project_orangehrm.Test.Admin_Configuration_Test"/>
-            <class name="project_orangehrm.Test.AdminUserManagementTest"/>
         </classes>
     </test>
 
-    <test name="Step2_PIM_Recruitment_Core" preserve-order="true">
+    <test name="Step2_PIM_Foundation" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.PIM_Configuration_Test"/>
             <class name="project_orangehrm.Test.PIM_Employee_Test"/>
             <class name="project_orangehrm.Test.PIM_EmployeeDetails_Test"/>
+            <class name="project_orangehrm.Test.AdminUserManagementTest"/>
+        </classes>
+    </test>
+
+    <test name="Step3_Recruitment" preserve-order="true">
+        <classes>
             <class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/>
             <class name="project_orangehrm.Test.Recruitment_Candidate_E2E_Test"/>
             <class name="project_orangehrm.Test.Recruitment_Search_And_Data_Test"/>
@@ -27,7 +32,7 @@
         </classes>
     </test>
 
-    <test name="Step3_Operational_Activities" parallel="classes" thread-count="4">
+    <test name="Step4_Operational" parallel="classes" thread-count="4">
         <classes>
             <class name="project_orangehrm.Test.Time_Configuration_Test"/>
             <class name="project_orangehrm.Test.Time_Attendance_Test"/>
@@ -43,7 +48,7 @@
         </classes>
     </test>
 
-    <test name="Step4_Performance_And_Engagement" parallel="classes" thread-count="4">
+    <test name="Step5_Performance_Engagement" parallel="classes" thread-count="4">
         <classes>
             <class name="project_orangehrm.Test.Performance_Configuration_Test"/>
             <class name="project_orangehrm.Test.Performance_Reviews_Test"/>
@@ -61,12 +66,24 @@
         </classes>
     </test>
 
-    <test name="Step5_Maintenance_And_Security" preserve-order="true">
+    <test name="Step6_Maintenance" parallel="classes" thread-count="2">
         <classes>
             <class name="project_orangehrm.Test.Maintenance_Authentication_Test"/>
             <class name="project_orangehrm.Test.Maintenance_AccessRecords_Test"/>
             <class name="project_orangehrm.Test.Maintenance_Safety_Test"/>
             <class name="project_orangehrm.Test.Maintenance_PurgeRecords_Test"/>
+        </classes>
+    </test>
+
+    <test name="Step7_Cleanup" parallel="classes" thread-count="3">
+        <classes>
+            <class name="project_orangehrm.TestCleaning.AdminTestCleaning"/>
+            <class name="project_orangehrm.TestCleaning.PIMTestCleaning"/>
+            <class name="project_orangehrm.TestCleaning.RecruitmentTestCleaning"/>
+            <class name="project_orangehrm.TestCleaning.PerformanceTestCleaning"/>
+            <class name="project_orangehrm.TestCleaning.ClaimTestCleaning"/>
+            <class name="project_orangehrm.TestCleaning.BuzzTestCleaning"/>
+            <class name="project_orangehrm.TestCleaning.TimeTestCleaning"/>
         </classes>
     </test>
 

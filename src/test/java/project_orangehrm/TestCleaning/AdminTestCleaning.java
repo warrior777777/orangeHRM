@@ -27,21 +27,8 @@ public class AdminTestCleaning extends BaseTest {
                 .navigateToModule("Admin");
     }
 
-    @Test(priority = 1, description = "Validate and Cleanup User Account")
-    public void cleanUpUserAccount() {
-        adminPage
-                .verifyAdminPage("Admin")
-                .typeInDynamicField("Employee Name", "Script Automation Test")
-                .typeInDynamicField("Username", "TestAdmin_QA")
-                .searchUser()
-                .verifyRecordExists("TestAdmin_QA");
-        adminPage
-                .deleteSpecificValue("TestAdmin_QA")
-                .verifySuccessMessage();
-    }
 
-
-    @Test(priority = 2, description = "Validate and Cleanup Job Title")
+    @Test(priority = 1, description = "Validate and Cleanup Job Title")
     public void cleanUpJobTitle() {
         adminPage
                 .verifyAdminPage("Admin")
@@ -51,48 +38,47 @@ public class AdminTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 3, description = "Validate and Cleanup Pay Grade")
+    @Test(priority = 2, description = "Validate and Cleanup Pay Grade")
     public void cleanUpPayGrade() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Job","Pay Grades")
+                .navigateToSection("Job", "Pay Grades")
                 .verifyRecordExists("Grade 5 - Executive")
                 .deleteSpecificValue("Grade 5 - Executive")
                 .verifySuccessMessage();
     }
 
-
-    @Test(priority = 4, description = "Validate and Cleanup Employment Status")
+    @Test(priority = 2, description = "Cleanup Employment Status - Freelance - Project Based")
     public void cleanUpEmploymentStatus() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Job","Employment Status")
+                .navigateToSection("Job", "Employment Status")
                 .verifyRecordExists("Freelance - Project Based")
                 .deleteSpecificValue("Freelance - Project Based")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 5, description = "Validate and Cleanup Job Category")
+    @Test(priority = 3, description = "Cleanup Job Category - Professionals - QA Engineer")
     public void cleanUpJobCategory() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Job","Job Categories")
+                .navigateToSection("Job", "Job Categories")
                 .verifyRecordExists("Professionals - َQA Engineer")
                 .deleteSpecificValue("Professionals - َQA Engineer")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 6, description = "Validate and Cleanup Work Shift")
+    @Test(priority = 4, description = "Cleanup Work Shift - Night Shift - B")
     public void cleanUpWorkShift() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Job","Work Shifts")
+                .navigateToSection("Job", "Work Shifts")
                 .verifyRecordExists("Night Shift - B")
                 .deleteSpecificValue("Night Shift - B")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 7, description = "Validate and Cleanup Location")
+    @Test(priority = 6, description = "Validate and Cleanup Location")
     public void cleanUpLocation() {
         adminPage
                 .verifyAdminPage("Admin")
@@ -106,7 +92,7 @@ public class AdminTestCleaning extends BaseTest {
     }
 
 /** wait to Edit (Structure) notable to use dynamic locator
-    @Test(priority = 8)
+    @Test(priority = 7)
     public void test8() {
         adminPage
                 .verifyAdminPage("Admin")
@@ -121,74 +107,64 @@ public class AdminTestCleaning extends BaseTest {
     **/
 
 
-    @Test(priority = 9, description = "Validate and Cleanup Skill")
+    @Test(priority =8, description = "Validate and Cleanup Skill - Java Automation")
     public void cleanUpSkill() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Qualifications","Skills")
-                .verifyRecordExists("Java Automation");
-        adminPage
-                .deleteSpecificValue("Backend and Frontend Testing")
+                .navigateToSection("Qualifications", "Skills")
+                .verifyRecordExists("Java Automation")
+                .deleteSpecificValue("Java Automation")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 10, description = "Validate and Cleanup Education")
+    @Test(priority = 9, description = "Cleanup Education - Master of Science")
     public void cleanUpEducation() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Qualifications","Education")
-                .verifyRecordExists("Master of Science");
-        adminPage
+                .navigateToSection("Qualifications", "Education")
+                .verifyRecordExists("Master of Science")
                 .deleteSpecificValue("Master of Science")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 11, description = "Validate and cleanup License")
+    @Test(priority = 10, description = "Cleanup License - ISTQB Foundation")
     public void cleanUpLicense() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Qualifications","Licenses")
-                .verifyRecordExists("ISTQB Foundation");
-        adminPage
+                .navigateToSection("Qualifications", "Licenses")
+                .verifyRecordExists("ISTQB Foundation")
                 .deleteSpecificValue("ISTQB Foundation")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 12, description = "Validate and Cleanup Language")
+    @Test(priority = 11, description = "Cleanup Language - German-Arabic")
     public void cleanUpLanguage() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Qualifications","Languages")
-                .verifyRecordExists("German-Arabic");
-        adminPage
+                .navigateToSection("Qualifications", "Languages")
+                .verifyRecordExists("German-Arabic")
                 .deleteSpecificValue("German-Arabic")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 13, description = "Validate and Cleanup Membership")
+    @Test(priority = 12, description = "Cleanup Membership - IEEE Member")
     public void cleanUpMembership() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Qualifications","Memberships")
-                .verifyRecordExists("IEEE Member");
-        adminPage
+                .navigateToSection("Qualifications", "Memberships")
+                .verifyRecordExists("IEEE Member")
                 .deleteSpecificValue("IEEE Member")
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 14, description = "Validate and Cleanup Email Subscription")
-    public void cleanUpEmailConfiguration() {
+    @Test(priority = 13, description = "Cleanup Email Subscription - Automation Subscriber")
+    public void cleanUpEmailSubscription() {
         adminPage
                 .verifyAdminPage("Admin")
-                .navigateToSection("Configuration","Email Subscriptions")
+                .navigateToSection("Configuration", "Email Subscriptions")
                 .clickToSubscribe("Leave Applications")
-                .verifyRecordExists("Automation Subscriber");
-        adminPage
+                .verifyRecordExists("Automation Subscriber")
                 .deleteSpecificValue("Automation Subscriber")
                 .verifySuccessMessage();
     }
-
-
-
-
 }

@@ -1,9 +1,7 @@
 package project_orangehrm.Pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import project_orangehrm.Base.BasePage;
 
 public class CommonPage extends BasePage {
@@ -20,6 +18,7 @@ public class CommonPage extends BasePage {
     private final By OK_BTN = By.xpath("//button[normalize-space()='Ok']");
     private final By CONFIRM_BTN = By.xpath("//button[normalize-space()='Confirm']");
     private final By SUCCESS_TOAST = By.xpath("//div[contains(@class, 'oxd-toast--success')]");
+    private final By FIRST_OPTION_BTN = By.xpath("//div[@role='listbox']//span");
     private final By INFO_TOAST = By.xpath("//div[contains(@class, 'oxd-toast--info')]");
     private final By ERROR_TOAST = By.xpath("//div[contains(@class, 'oxd-toast--error')]");
     private final By TOGGLE_SWITCH = By.xpath("//span[contains(@class, 'oxd-switch-input')]");
@@ -96,7 +95,7 @@ public class CommonPage extends BasePage {
     }
 
     public CommonPage selectFirstOption() {
-        clickWhenReady(By.xpath("//div[@role='listbox']//span"));
+        clickWhenReady(FIRST_OPTION_BTN);
         return this;
     }
 
@@ -261,6 +260,23 @@ public class CommonPage extends BasePage {
         return this;
     }
 
+    public CommonPage verifyRecordVisibleSuccessHybrid(String recordName) {
+        try {
+            verifySuccessToast();
+        } catch (Throwable e) {
+            verifyRecordVisible(recordName);
+        }
+        return this;
+    }
+
+    public CommonPage verifyRecordNotVisibleSuccessHybrid(String recordName) {
+        try {
+            verifySuccessToast();
+        } catch (Throwable e) {
+            verifyRecordNotVisible(recordName);
+        }
+        return this;
+    }
 
     public CommonPage verifyElementVisible(String elementText) {
         assertVisible(getLocator(DYNAMIC_WIDGET, elementText), "Element not visible: " + elementText);

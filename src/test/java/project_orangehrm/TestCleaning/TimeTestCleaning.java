@@ -1,8 +1,8 @@
 package project_orangehrm.TestCleaning;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import project_orangehrm.Base.BaseTest;
-import project_orangehrm.Pages.AdminPage;
 import project_orangehrm.Pages.DashboardPage;
 import project_orangehrm.Pages.LoginPage;
 import project_orangehrm.Pages.TimePage;
@@ -13,8 +13,8 @@ public class TimeTestCleaning extends BaseTest {
     private DashboardPage dashboardPage;
     private TimePage timePage;
 
+    @BeforeMethod
     public void setUP() {
-
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
         timePage = new TimePage(driver);
@@ -27,8 +27,8 @@ public class TimeTestCleaning extends BaseTest {
                 .navigateToModule("Time");
     }
 
-    @Test(priority = 1,description = "test1")
-    public void test1() {
+    @Test(priority = 1, description = "Cleanup Attendance Record - Started working on Automation")
+    public void cleanUpAttendance_StartedWorkingOnAutomation() {
         timePage
                 .navigateToSection("Attendance", "My Records")
                 .selectDate("Date", "2024-12-15")
@@ -37,5 +37,13 @@ public class TimeTestCleaning extends BaseTest {
                 .verifySuccessMessage();
     }
 
-
+    @Test(priority = 2, description = "Cleanup Attendance Record - Leaving for the day")
+    public void cleanUpAttendance_LeavingForTheDay() {
+        timePage
+                .navigateToSection("Attendance", "My Records")
+                .selectDate("Date", "2024-12-30")
+                .clickToSubmit()
+                .deleteSpecificValue("Leaving for the day")
+                .verifySuccessMessage();
+    }
 }

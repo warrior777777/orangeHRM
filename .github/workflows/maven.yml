@@ -3,7 +3,19 @@ name: OrangeHRM Strategic Execution Suite
 on:
   push:
     branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
   workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to run tests'
+        required: false
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - edge
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,10 +26,15 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  BROWSER: ${{ github.event.inputs.browser || 'chrome' }}
+  MAVEN_OPTS: -Xmx1024m
+
 jobs:
   foundation:
-    name: Foundation (Admin & PIM)
+    name: Foundation (Admin + PIM + Recruitment)
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -29,30 +46,50 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Foundation Steps
+      - name: Setup Chrome Browser
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: Start Display (Xvfb)
+        run: |
+          export DISPLAY=:99
+          sudo Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 3
+
+      - name: Run Foundation Tests
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
-            -Dtestnames=Step1_Core_Admin,Step2_PIM_Foundation \
+            -Dtestnames=Step1_Admin_Foundation,Step2_PIM_Foundation,Step3_Recruitment \
+            -Dbrowser=chrome \
             -Dheadless=true \
             -Dmaven.test.failure.ignore=true
+        env:
+          DISPLAY: :99
 
-      - name: Upload Foundation Artifacts
+      - name: Upload Foundation Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-foundation
           path: target/allure-results
-
+          retention-days: 5
 
   operations:
+    name: ${{ matrix.test-step }}
     needs: foundation
-    name: Run ${{ matrix.test-step }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        test-step: ["Step3_Operational_Flow", "Step4_Talent_And_Reports", "Step5_Maintenance_Safety"]
+        test-step:
+          - "Step4_Operational"
+          - "Step5_Performance_Engagement"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -64,28 +101,94 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Parallel Group (4 Threads)
+      - name: Setup Chrome Browser
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: Start Display (Xvfb)
+        run: |
+          export DISPLAY=:99
+          sudo Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 3
+
+      - name: Run ${{ matrix.test-step }}
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
             -Dtestnames=${{ matrix.test-step }} \
+            -Dbrowser=chrome \
             -Dheadless=true \
-            -Dparallel=classes \
-            -DthreadCount=4 \
             -Dmaven.test.failure.ignore=true
+        env:
+          DISPLAY: :99
 
-      - name: Upload Step Artifacts
+      - name: Upload Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.test-step }}
           path: target/allure-results
+          retention-days: 5
+
+  maintenance-cleanup:
+    name: Maintenance & Cleanup
+    needs: operations
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Setup Chrome Browser
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: Start Display (Xvfb)
+        run: |
+          export DISPLAY=:99
+          sudo Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 3
+
+      - name: Run Maintenance & Cleanup
+        run: |
+          mvn test -B \
+            -Dsurefire.suiteXmlFiles=testng.xml \
+            -Dtestnames=Step6_Maintenance,Step7_Cleanup \
+            -Dbrowser=chrome \
+            -Dheadless=true \
+            -Dmaven.test.failure.ignore=true
+        env:
+          DISPLAY: :99
+
+      - name: Upload Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-maintenance-cleanup
+          path: target/allure-results
+          retention-days: 5
 
   report:
-    name: Aggregate and Deploy Report
-    needs: [foundation, operations]
+    name: Generate & Deploy Report
+    needs: [foundation, operations, maintenance-cleanup]
     if: always()
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -99,7 +202,6 @@ jobs:
 
       - name: Download Allure History
         uses: actions/checkout@v4
-        if: always()
         continue-on-error: true
         with:
           ref: gh-pages
@@ -108,10 +210,16 @@ jobs:
       - name: Merge Results and History
         run: |
           mkdir -p target/allure-results
-          cp -r all-results/* target/allure-results/
-          [ -d gh-pages/history ] && cp -r gh-pages/history target/allure-results/ || echo "No history found"
+          if [ -d "all-results" ]; then
+            cp -r all-results/* target/allure-results/ 2>/dev/null || true
+          fi
+          if [ -d "gh-pages/history" ]; then
+            cp -r gh-pages/history target/allure-results/
+          fi
+          echo "Files in allure-results:"
+          ls -la target/allure-results/ || echo "No files found"
 
-      - name: Generate Final Allure Report
+      - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
         if: always()
         with:
@@ -126,3 +234,16 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
+
+      - name: Job Summary
+        if: always()
+        run: |
+          echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Foundation | ${{ needs.foundation.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Operations | ${{ needs.operations.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Maintenance | ${{ needs.maintenance-cleanup.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Allure Report:** [View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)" >> $GITHUB_STEP_SUMMARY

@@ -27,22 +27,23 @@ public class PerformanceTestCleaning extends BaseTest {
                 .navigateToModule("Performance");
     }
 
-    @Test(priority = 1, description = "test")
-    public void test1() {
-   performancePage
-           .navigateToSection("Configure","KPIs")
-           .clickAndSelectDropdown("Job Title","QA Engineer")
-           .deleteSpecificValue("Zero Production Bugs")
-           .verifySuccessMessage();
+    @Test(priority = 1, description = "Cleanup KPI - Zero Production Bugs")
+    public void cleanUpKPI_ZeroProductionBugs() {
+        performancePage
+                .navigateToSection("Configure","KPIs")
+                .clickAndSelectDropdown("Job Title","QA Engineer")
+                .searchUser()
+                .deleteSpecificValue("Zero Production Bugs")
+                .verifySuccessMessage();
     }
 
-    @Test(priority = 2, description = "test")
-    public void test2() {
+    @Test(priority = 2, description = "Cleanup Tracker - Quality Tracker 2025")
+    public void cleanUpTracker_QualityTracker2025() {
         performancePage
                 .navigateToSection("Configure", "Trackers")
                 .deleteSpecificValue("Quality Tracker 2025")
                 .verifySuccessMessage();
     }
-    }
+}
 
 
