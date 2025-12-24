@@ -1,7 +1,0 @@
-Failed to capture screenshot or page source: Error communicating with the remote browser. It may have died.
-Build info: version: '4.37.0', revision: '3c1da1e342'
-System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.11.0-1018-azure', java.version: '21.0.9'
-Driver info: org.openqa.selenium.edge.EdgeDriver
-Command: [754fd5cc4f895bbfe7c0994f2e8903a5, screenshot []]
-Capabilities {acceptInsecureCerts: false, browserName: MicrosoftEdge, browserVersion: 143.0.3650.80, fedcm:accounts: true, goog:processID: 25833, ms:edgeOptions: {debuggerAddress: localhost:36765}, msedge: {msedgedriverVersion: 143.0.3650.80 (788579717f68..., userDataDir: /tmp/.com.microsoft.Edge.sc...}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://localhost:36765/devtoo..., se:cdpVersion: 143.0.3650.80, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 754fd5cc4f895bbfe7c0994f2e8903a5
