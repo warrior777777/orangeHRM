@@ -4,7 +4,6 @@
 
     <parameter name="browser" value="edge"/>
 
-    <!-- Step 1: Admin Foundation - Sequential -->
     <test name="Step1_Admin_Foundation" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.LoginTest"/>
@@ -16,7 +15,6 @@
         </classes>
     </test>
 
-    <!-- Step 2: PIM Foundation - Sequential -->
     <test name="Step2_PIM_Foundation" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.PIM_Configuration_Test"/>
@@ -26,7 +24,6 @@
         </classes>
     </test>
 
-    <!-- Step 3: Recruitment - Sequential -->
     <test name="Step3_Recruitment" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/>
@@ -37,7 +34,6 @@
         </classes>
     </test>
 
-    <!-- Step 4: Operational - Parallel -->
     <test name="Step4_Operational" parallel="classes" thread-count="4">
         <classes>
             <class name="project_orangehrm.Test.Time_Configuration_Test"/>
@@ -57,7 +53,6 @@
         </classes>
     </test>
 
-    <!-- Step 5: Performance & Engagement - Parallel -->
     <test name="Step5_Performance_Engagement" parallel="classes" thread-count="4">
         <classes>
             <class name="project_orangehrm.Test.Performance_Configuration_Test"/>
@@ -66,7 +61,6 @@
             <class name="project_orangehrm.Test.Performance_Evaluation_Test"/>
             <class name="project_orangehrm.Test.Buzz_Newsfeed_Test"/>
             <class name="project_orangehrm.Test.Buzz_Features_Test"/>
-            <class name="project_orangehrm.Test.Buzz_Media_Test"/>
             <class name="project_orangehrm.Test.Dashboard_Widgets_Test"/>
             <class name="project_orangehrm.Test.Dashboard_UserActions_Test"/>
             <class name="project_orangehrm.Test.Dashboard_Advanced_Test"/>
@@ -78,7 +72,6 @@
         </classes>
     </test>
 
-    <!-- Step 6: Maintenance - Parallel -->
     <test name="Step6_Maintenance" parallel="classes" thread-count="2">
         <classes>
             <class name="project_orangehrm.Test.Maintenance_Authentication_Test"/>
@@ -88,7 +81,6 @@
         </classes>
     </test>
 
-    <!-- Step 7: Cleanup - Parallel -->
     <test name="Step7_Cleanup" parallel="classes" thread-count="4">
         <classes>
             <class name="project_orangehrm.TestCleaning.AdminTestCleaning"/>

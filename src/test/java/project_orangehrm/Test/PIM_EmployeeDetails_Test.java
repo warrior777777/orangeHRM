@@ -29,8 +29,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .navigateToModule("PIM");
     }
 
-    // ==================== Personal Details ====================
-
     @Test(priority = 1, description = "TC01 - Verify Personal Details View")
     public void verifyPersonalDetails_View_Success() {
         pimPage
@@ -56,8 +54,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    // ==================== Contact Details ====================
-
     @Test(priority = 3, description = "TC03 - Verify Contact Details Update")
     public void verifyContactDetails_Update_Success() {
         pimPage
@@ -75,8 +71,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .clickSave()
                 .verifySuccessMessage();
     }
-
-    // ==================== Emergency Contacts ====================
 
     @Test(priority = 4, description = "TC04 - Verify Emergency Contact Add")
     public void verifyEmergencyContact_Add_Success() {
@@ -112,8 +106,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    // ==================== Dependents ====================
-
     @Test(priority = 6, description = "TC06 - Verify Dependent Add")
     public void verifyDependent_Add_Success() {
         pimPage
@@ -147,10 +139,8 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    // ==================== Immigration ====================
-
-    @Test(priority = 8, description = "TC08 - Verify Immigration Record Add")
-    public void verifyImmigration_Add_Success() {
+    @Test(priority = 8, description = "TC08 - Add Immigration Document (Passport)")
+    public void addImmigrationDocument_Passport_Success() {
         pimPage
                 .navigateToSection("Employee List")
                 .typeInDynamicField("Employee Name", "Script Automation")
@@ -183,8 +173,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    // ==================== Salary ====================
-
     @Test(priority = 10, description = "TC10 - Verify Salary Component Add")
     public void verifySalary_AddComponent_Success() {
         pimPage
@@ -204,8 +192,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .clickSave()
                 .verifySuccessMessage();
     }
-
-    // ==================== Qualifications ====================
 
     @Test(priority = 11, description = "TC11 - Verify Work Experience Add")
     public void verifyQualifications_WorkExperience_Add_Success() {
@@ -304,8 +290,6 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
                 .clickSave()
                 .verifySuccessMessage();
     }
-
-    // ==================== Memberships ====================
 
     @Test(priority = 16, description = "TC16 - Verify Membership Add")
     public void verifyMembership_Add_Success() {

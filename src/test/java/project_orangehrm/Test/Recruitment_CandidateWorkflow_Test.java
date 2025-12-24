@@ -85,7 +85,6 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
                 .typeInDynamicField("Interviewer", "Script Automation Tester")
                 .selectFromList()
                 .selectDate("Date", "2025-01-20")
-           //     .selectTime("Time", "10:00 AM")
                 .typeInDynamicTextArea("Notes", "Technical Round 1")
                 .clickSave()
                 .verifySuccessMessage();
@@ -151,8 +150,6 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
                 .clickSave()
                 .verifySuccessMessage();
     }
-
-    // ==================== Offer Job ====================
 
     @Test(priority = 8, description = "TC08 - Verify Offer Job")
     public void verifyCandidate_OfferJob_Success() {

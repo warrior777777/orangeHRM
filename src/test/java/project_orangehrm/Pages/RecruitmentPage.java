@@ -4,8 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 
-
-
 public class RecruitmentPage extends CommonPage {
 
     private final By STATUS_FILED = By.cssSelector(".oxd-text--subtitle-2");
@@ -13,9 +11,6 @@ public class RecruitmentPage extends CommonPage {
     private final By DYNAMIC_BTN = By.xpath("//button[normalize-space()='Reject']");
 
     String DYNAMIC_NAME_FILED = "//label[normalize-space()='%s']/../following-sibling::div//input[@placeholder='%s']";
-
-
-
 
     public RecruitmentPage(WebDriver driver) {
         super(driver);

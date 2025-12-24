@@ -81,7 +81,6 @@ public class Leave_ApplyLeave_Test extends BaseTest {
                 .verifyElementVisible("Balance");
     }
 
-    // ==================== My Leave ====================
 
     @Test(priority = 5, description = "TC05 - Verify My Leave List Display")
     public void verifyMyLeave_ListDisplay_Success() {

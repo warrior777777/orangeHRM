@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 
 public class PerformancePage extends CommonPage {
 
-    // Specific Locators for Performance Page
     private final By VERIFY_ADMINISTRATOR_CARD = By.cssSelector(".orangehrm-card-container");
     private final By VIEW_TRACKER_BTN = By.xpath("//button[i[contains(@class,'bi-eye')]]");
     private final By ACTIVATE_BTN = By.xpath("//button[normalize-space()='Activate']");

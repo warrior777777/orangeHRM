@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 
 public class DirectoryPage extends CommonPage {
 
-    // Specific Locators for Directory Page
     private final By DIRECTORY_CARD = By.cssSelector(".orangehrm-directory-card");
     private final By DIRECTORY_CARD_HEADER = By.cssSelector(".orangehrm-directory-card-header");
     private final By NO_RECORDS_FOUND = By.xpath("//span[contains(text(),'No Records Found')]");

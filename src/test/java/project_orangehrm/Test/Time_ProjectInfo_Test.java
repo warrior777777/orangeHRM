@@ -27,7 +27,7 @@ public class Time_ProjectInfo_Test extends BaseTest {
                 .navigateToModule("Time");
     }
 
-    // ==================== Customers ====================
+
 
     @Test(priority = 1, description = "TC01 - Verify Customer Add")
     public void verifyCustomer_Add_Success() {
@@ -109,7 +109,6 @@ public class Time_ProjectInfo_Test extends BaseTest {
                 .deleteSpecificValue(customerName);
     }
 
-    // ==================== Projects ====================
 
     @Test(priority = 6, description = "TC06 - Verify Project Add")
     public void verifyProject_Add_Success() {
@@ -241,7 +240,6 @@ public class Time_ProjectInfo_Test extends BaseTest {
                 .verifySearchTable();
     }
 
-    // ==================== Project Activities ====================
 
     @Test(priority = 15, description = "TC15 - Verify Add Project Activity")
     public void verifyProjectActivity_Add_Success() {
@@ -274,8 +272,6 @@ public class Time_ProjectInfo_Test extends BaseTest {
                 .deleteSpecificValue("QA Testing Activity")
                 .verifySuccessMessage();
     }
-
-    // ==================== Cleanup ====================
 
     @Test(priority = 17, description = "TC17 - Cleanup: Delete Test Projects and Customer")
     public void cleanup_DeleteTestData() {
