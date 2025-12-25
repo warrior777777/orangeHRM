@@ -1,1 +1,1 @@
-{"total":1,"items":[{"uid":"71df977c12795ce6d9052980980f3c74","name":"OrangeHRM_E2E_Suite","statistic":{"failed":11,"broken":92,"skipped":0,"passed":231,"unknown":0,"total":334}}]}
+{"total":2,"items":[{"uid":"940a09faf31371a51747026c9d178f0a","name":"Surefire suite","statistic":{"failed":0,"broken":1,"skipped":0,"passed":33,"unknown":0,"total":34}},{"uid":"71df977c12795ce6d9052980980f3c74","name":"OrangeHRM_E2E_Suite","statistic":{"failed":0,"broken":0,"skipped":0,"passed":18,"unknown":0,"total":18}}]}
