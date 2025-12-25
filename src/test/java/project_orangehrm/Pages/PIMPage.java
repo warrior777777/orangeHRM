@@ -7,10 +7,10 @@ public class PIMPage extends CommonPage {
 
     private final By TERMINATE_EMPLOYMENT = By.xpath("//button[normalize-space()='Terminate Employment']");
 
-
     private final String DYNAMIC_NAME_FILED = "//label[normalize-space()='%s']/../following-sibling::div//input[@placeholder='%s']";
     private final String DYNAMIC_SIDEBAR_EMPLOYEE = "//div[contains(@class, 'orangehrm-tabs')]//a[contains(text(), '%s')]";
     private final String DYNAMIC_SECTION_ADD_BUTTON = "//h6[contains(., '%s')]/following-sibling::button[contains(., 'Add')]";
+
 
     public PIMPage(WebDriver driver) {
         super(driver);
@@ -33,6 +33,10 @@ public class PIMPage extends CommonPage {
 
     public PIMPage clickSideBarEmp(String value) {
         clickWhenReady(By.xpath(String.format(DYNAMIC_SIDEBAR_EMPLOYEE, value)));
+        return this;
+    }
+    public PIMPage verifyToSection(String element) {
+        verifySection(element);
         return this;
     }
 

@@ -43,8 +43,8 @@ public class Admin_Nationalities_Test extends BaseTest {
 
     @Test(priority = 2, description = "TC02 - Verify Nationality Lifecycle: Create, Edit, Delete")
     public void verifyNationality_Lifecycle_Edit() {
-        String nationalityName = "Test Nationality";
-        String updatedName = "Updated Test Nationality";
+        String nationalityName = "1-Test Nationality";
+        String updatedName = "1-Updated Test Nationality";
         adminPage
                 .navigateToSection("Nationalities")
                 .clickToAdd()

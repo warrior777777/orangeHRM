@@ -31,6 +31,14 @@ public class BasePage {
                 .ignoring(WebDriverException.class);
     }
 
+    public void hardWait(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public void assertVisible(By locator, String message) {
         try {
             fluentWait.until(ExpectedConditions.visibilityOfElementLocated(locator));

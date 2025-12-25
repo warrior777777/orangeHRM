@@ -30,6 +30,8 @@ public class CommonPage extends BasePage {
     private final By BODY_TAG = By.tagName("body");
     private final By CLOSE_POPUPS = By.xpath("//div[@class='oxd-date-input-link --close']");
 
+
+    private final String VERIFY_SECTION = "//h6[normalize-space()='%s']";
     private final String SIDE_MENU_ITEM = "//a[contains(@class,'oxd-main-menu-item')]/span[text()='%s']";
     private final String TOP_BAR_MENU = "//nav[@aria-label='Topbar Menu']//li[contains(normalize-space(), '%s')]";
     private final String DROPDOWN_MENU = "//ul[@role='menu']//a[contains(normalize-space(), '%s')]";
@@ -71,6 +73,11 @@ public class CommonPage extends BasePage {
 
     public CommonPage navigateToSection(String mainCategory) {
         clickWhenReady(getLocator(TOP_BAR_MENU, mainCategory));
+        return this;
+    }
+
+    public CommonPage waitInSeconds(int seconds) {
+        hardWait(seconds);
         return this;
     }
 
@@ -292,6 +299,11 @@ public class CommonPage extends BasePage {
 
     public CommonPage verifyElementVisible(String elementText) {
         assertVisible(getLocator(DYNAMIC_WIDGET, elementText), "Element not visible: " + elementText);
+        return this;
+    }
+
+    public CommonPage verifySection(String elementText) {
+        assertVisible(getLocator(VERIFY_SECTION,elementText),"Element not visible: " + elementText );
         return this;
     }
 

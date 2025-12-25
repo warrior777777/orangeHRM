@@ -4,9 +4,10 @@
 
     <parameter name="browser" value="edge"/>
 
-    <test name="Step1_Admin_Foundation" preserve-order="true">
+    <test name="Step1_Hyper_Admin_PIM_Foundation" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.LoginTest"/>
+            <class name="project_orangehrm.Test.PIM_Employee_Test"/>
             <class name="project_orangehrm.Test.AdminJobTest"/>
             <class name="project_orangehrm.Test.AdminOrganizationTest"/>
             <class name="project_orangehrm.Test.Admin_Qualifications_Test"/>
@@ -15,10 +16,9 @@
         </classes>
     </test>
 
-    <test name="Step2_PIM_Foundation" preserve-order="true">
+    <test name="Step2_Hyper_Admin_PIM_Foundation" preserve-order="true">
         <classes>
             <class name="project_orangehrm.Test.PIM_Configuration_Test"/>
-            <class name="project_orangehrm.Test.PIM_Employee_Test"/>
             <class name="project_orangehrm.Test.PIM_EmployeeDetails_Test"/>
             <class name="project_orangehrm.Test.AdminUserManagementTest"/>
         </classes>

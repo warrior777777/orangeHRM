@@ -33,11 +33,11 @@ public class PIM_EmployeeDetails_Test extends BaseTest {
     public void verifyPersonalDetails_View_Success() {
         pimPage
                 .navigateToSection("Employee List")
-                .typeInDynamicField("Employee Name", "Script Automation")
+                .typeInDynamicField("Employee Name", "Script Automation Tester")
                 .selectFromList()
                 .searchUser()
                 .clickToEdit("Script")
-                .verifyElementVisible("Personal Details");
+                .verifyToSection("Personal Details");
     }
 
     @Test(priority = 2, description = "TC02 - Verify Personal Details Edit")

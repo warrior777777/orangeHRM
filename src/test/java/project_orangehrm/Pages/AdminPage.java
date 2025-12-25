@@ -28,6 +28,11 @@ public class AdminPage extends CommonPage {
         return this;
     }
 
+    public AdminPage waitInSeconds(int seconds) {
+        super.hardWait(seconds);
+        return this;
+    }
+
     public AdminPage typeInDynamicField(String fieldName, String text) {
         typeInField(fieldName, text);
         return this;

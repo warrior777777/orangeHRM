@@ -187,6 +187,8 @@ public class AdminOrganizationTest extends BaseTest {
                 .clickToSave()
                 .verifySuccessMessage();
         adminPage
+                .waitInSeconds(4);
+        adminPage
                 .clickToAdd()
                 .typeInDynamicField("Unit Id", unitId)
                 .typeInDynamicField("Name", unitName)
