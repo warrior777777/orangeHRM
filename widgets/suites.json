@@ -1,1 +1,1 @@
-{"total":1,"items":[{"uid":"71df977c12795ce6d9052980980f3c74","name":"OrangeHRM_E2E_Suite","statistic":{"failed":25,"broken":105,"skipped":0,"passed":203,"unknown":0,"total":333}}]}
+{"total":1,"items":[{"uid":"71df977c12795ce6d9052980980f3c74","name":"OrangeHRM_E2E_Suite","statistic":{"failed":3,"broken":3,"skipped":0,"passed":43,"unknown":0,"total":49}}]}
