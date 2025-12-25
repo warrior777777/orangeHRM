@@ -155,7 +155,7 @@ jobs:
           - name: Dash_Adv
             tests: "project_orangehrm.Test.Dashboard_UserActions_Test,project_orangehrm.Test.Dashboard_Advanced_Test,project_orangehrm.Test.Directory_Test"
           - name: All_Reports
-            tests: "project_orangehrm.Test.Claim_*,project_orangehrm.Test.Time_ProjectInfo_Test,project_orangehrm.Test.Time_BusinessLogic_Test"
+            tests: "project_orangehrm.Test.*_Reports_Test"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
