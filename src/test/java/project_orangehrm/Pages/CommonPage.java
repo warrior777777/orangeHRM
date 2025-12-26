@@ -265,7 +265,7 @@ public class CommonPage extends BasePage {
     }
 
     public CommonPage verifySuccessToast() {
-        softAssertVisible(SUCCESS_TOAST, "Success message not displayed");
+        assertVisible(SUCCESS_TOAST, "Success message not displayed");
         return this;
     }
 

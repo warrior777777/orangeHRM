@@ -55,7 +55,7 @@ jobs:
         timeout-minutes: 50
         run: |
           mvn test -B \
-            -Dtest="LoginTest,PIM*,Admin*,Recruitment*" \
+            -Dtest="LoginTest,PIM*,Admin*,Recruitment*,!*Cleaning" \
             -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true
         env:
@@ -94,7 +94,7 @@ jobs:
           - name: Leave_Apply
             test_patterns: "Leave_ApplyLeave_Test,Leave_LeaveList_Test"
           - name: Claims
-            test_patterns: "Claim_*"
+            test_patterns: "Claim_*,!*Cleaning"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -153,7 +153,7 @@ jobs:
           - name: Perf_Eval
             test_patterns: "Performance_MyReviews_Test,Performance_Evaluation_Test"
           - name: Buzz_Dash
-            test_patterns: "Buzz_*,Dashboard_Widgets_Test"
+            test_patterns: "Buzz_*,Dashboard_Widgets_Test,!*Cleaning"
           - name: Dash_Adv
             test_patterns: "Dashboard_UserActions_Test,Dashboard_Advanced_Test,Directory_Test"
           - name: All_Reports
@@ -260,7 +260,8 @@ jobs:
 
   cleanup:
     name: Clean - ${{ matrix.name }}
-    needs: [operations, performance]
+    # تصحيح جوهري: يجب أن تنتظر مرحلة الصيانة أيضاً
+    needs: [operations, performance, maintenance]
     if: success() || failure()
     runs-on: ubuntu-latest
     timeout-minutes: 20
