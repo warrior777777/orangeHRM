@@ -31,7 +31,7 @@ jobs:
   foundation:
     name: Foundation (Admin + PIM + Recruitment)
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 45
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -43,25 +43,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Setup Xvfb
+      - name: Setup Xvfb with cleanup trap
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
       - name: Run Foundation Tests
+        timeout-minutes: 40
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
             -Dtestnames=Step1_Hyper_Admin_PIM_Foundation,Step2_PIM_User_Foundation,Step3_Recruitment \
-            -Dbrowser=chrome \
+            -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true
         env:
           DISPLAY: :99
 
-      - name: Upload Foundation Results
+      - name: Cleanup Xvfb
         if: always()
+        run: |
+          if [ -n "$XVFB_PID" ]; then
+            kill $XVFB_PID 2>/dev/null || true
+          fi
+          pkill Xvfb || true
+
+      - name: Upload Foundation Results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-foundation
@@ -71,7 +81,9 @@ jobs:
   operations:
     name: Ops - ${{ matrix.name }}
     needs: foundation
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -97,25 +109,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Setup Xvfb
+      - name: Setup Xvfb with cleanup trap
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
       - name: Run ${{ matrix.name }}
+        timeout-minutes: 25
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
             -Dtestnames="${{ matrix.testname }}" \
-            -Dbrowser=chrome \
+            -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true
         env:
           DISPLAY: :99
 
-      - name: Upload Ops Results
+      - name: Cleanup Xvfb
         if: always()
+        run: |
+          if [ -n "$XVFB_PID" ]; then
+            kill $XVFB_PID 2>/dev/null || true
+          fi
+          pkill Xvfb || true
+
+      - name: Upload Ops Results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-ops-${{ matrix.name }}
@@ -125,7 +147,9 @@ jobs:
   performance:
     name: Perf - ${{ matrix.name }}
     needs: foundation
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -151,25 +175,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Setup Xvfb
+      - name: Setup Xvfb with cleanup trap
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
       - name: Run ${{ matrix.name }}
+        timeout-minutes: 25
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
             -Dtestnames="${{ matrix.testname }}" \
-            -Dbrowser=chrome \
+            -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true
         env:
           DISPLAY: :99
 
-      - name: Upload Perf Results
+      - name: Cleanup Xvfb
         if: always()
+        run: |
+          if [ -n "$XVFB_PID" ]; then
+            kill $XVFB_PID 2>/dev/null || true
+          fi
+          pkill Xvfb || true
+
+      - name: Upload Perf Results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-perf-${{ matrix.name }}
@@ -179,7 +213,9 @@ jobs:
   maintenance:
     name: Maint - ${{ matrix.name }}
     needs: [operations, performance]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
@@ -199,25 +235,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Setup Xvfb
+      - name: Setup Xvfb with cleanup trap
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
       - name: Run ${{ matrix.name }}
+        timeout-minutes: 20
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
             -Dtestnames="${{ matrix.testname }}" \
-            -Dbrowser=chrome \
+            -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true
         env:
           DISPLAY: :99
 
-      - name: Upload Maint Results
+      - name: Cleanup Xvfb
         if: always()
+        run: |
+          if [ -n "$XVFB_PID" ]; then
+            kill $XVFB_PID 2>/dev/null || true
+          fi
+          pkill Xvfb || true
+
+      - name: Upload Maint Results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-maint-${{ matrix.name }}
@@ -227,8 +273,9 @@ jobs:
   cleanup:
     name: Clean - ${{ matrix.name }}
     needs: [operations, performance]
-    if: always()
+    if: success() || failure()
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -250,25 +297,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Setup Xvfb
+      - name: Setup Xvfb with cleanup trap
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
       - name: Run ${{ matrix.name }}
+        timeout-minutes: 15
         run: |
           mvn test -B \
             -Dsurefire.suiteXmlFiles=testng.xml \
             -Dtestnames="${{ matrix.testname }}" \
-            -Dbrowser=chrome \
+            -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true
         env:
           DISPLAY: :99
 
-      - name: Upload Cleanup Results
+      - name: Cleanup Xvfb
         if: always()
+        run: |
+          if [ -n "$XVFB_PID" ]; then
+            kill $XVFB_PID 2>/dev/null || true
+          fi
+          pkill Xvfb || true
+
+      - name: Upload Cleanup Results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-clean-${{ matrix.name }}
@@ -278,8 +335,9 @@ jobs:
   report:
     name: Generate Report
     needs: [foundation, operations, performance, maintenance, cleanup]
-    if: always()
+    if: success() || failure()
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -299,6 +357,7 @@ jobs:
           path: gh-pages
 
       - name: Prepare Results for Generation
+        timeout-minutes: 5
         run: |
           mkdir -p target/allure-results
           cp -r all-results/* target/allure-results/
@@ -309,7 +368,7 @@ jobs:
 
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
-        if: always()
+        if: success() || failure()
         with:
           allure_results: target/allure-results
           allure_history: gh-pages
@@ -317,14 +376,14 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: always()
+        if: success() || failure()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
 
       - name: Job Summary
-        if: always()
+        if: success() || failure()
         run: |
           echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -336,4 +395,4 @@ jobs:
           echo "| Maintenance | ${{ needs.maintenance.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Cleanup | ${{ needs.cleanup.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Allure Report:** [View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)" >> $GITHUB_STEP_SUMMARY
+          echo "**Allure Report:** [View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)\" >> $GITHUB_STEP_SUMMARY
