@@ -31,7 +31,7 @@ jobs:
   foundation:
     name: Foundation (Admin + PIM + Recruitment)
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
         with:
           name: allure-results-foundation
           path: target/allure-results
-          retention-days: 1
+          retention-days: 5
 
   operations:
     name: Ops - ${{ matrix.name }}
@@ -102,7 +102,7 @@ jobs:
         with:
           name: allure-results-ops-${{ matrix.name }}
           path: target/allure-results
-          retention-days: 1
+          retention-days: 5
 
   performance:
     name: Perf - ${{ matrix.name }}
@@ -147,7 +147,7 @@ jobs:
         with:
           name: allure-results-perf-${{ matrix.name }}
           path: target/allure-results
-          retention-days: 1
+          retention-days: 5
 
   maintenance:
     name: Maint - ${{ matrix.name }}
@@ -186,7 +186,7 @@ jobs:
         with:
           name: allure-results-maint-${{ matrix.name }}
           path: target/allure-results
-          retention-days: 1
+          retention-days: 5
 
   cleanup:
     name: Clean - ${{ matrix.name }}
@@ -228,7 +228,7 @@ jobs:
         with:
           name: allure-results-clean-${{ matrix.name }}
           path: target/allure-results
-          retention-days: 1
+          retention-days: 5
 
   report:
     name: Generate Report
@@ -257,8 +257,6 @@ jobs:
         run: |
           mkdir -p target/allure-results
           cp -r all-results/* target/allure-results/
-          
-          # استعادة التاريخ
           if [ -d "gh-pages/history" ]; then
             cp -r gh-pages/history target/allure-results/
           fi
