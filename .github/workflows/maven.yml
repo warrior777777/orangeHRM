@@ -119,7 +119,7 @@ jobs:
             -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true \
             -Dmaven.test.failure.ignore=true
-
+#
       - name: Upload regression Results
         if: success() || failure()
         uses: actions/upload-artifact@v4
