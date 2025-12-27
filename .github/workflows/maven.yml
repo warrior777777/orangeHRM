@@ -7,16 +7,16 @@ on:
     inputs:
       browser:
         description: 'Select Browser'
-        default: 'chrome'
+        default: 'edge'
         type: choice
-        options: [chrome, firefox]
+        options: [chrome,edge, firefox]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  BROWSER: ${{ github.event.inputs.browser || 'chrome' }}
+  BROWSER: ${{ github.event.inputs.browser || 'edge' }}
   MAVEN_OPTS: "-Xmx3072m -Djava.awt.headless=true"
 
 jobs:

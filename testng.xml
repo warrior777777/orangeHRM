@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="OrangeHRM_Atomic_Pro_Suite" verbose="1">
 
-    <parameter name="browser" value="chrome"/>
+    <parameter name="browser" value="edge"/>
 
     <test name="Foundation_Data_Seeding" preserve-order="true">
         <groups>
