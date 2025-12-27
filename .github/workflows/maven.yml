@@ -1,4 +1,4 @@
-name: OrangeHRM Atomic Pro Execution
+name: OrangeHRM Execution
 
 on:
   push:
