@@ -13,7 +13,7 @@ public class PIM_Employee_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private PIMPage pimPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -29,7 +29,7 @@ public class PIM_Employee_Test extends BaseTest {
                 .navigateToModule("PIM");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Add Employee Lifecycle: Create, Search")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Add Employee Lifecycle: Create, Search")
     public void verifyEmployee_Lifecycle_Success() {
         String FirstName = "Script";
         String MiddleName = "Automation";
@@ -52,7 +52,7 @@ public class PIM_Employee_Test extends BaseTest {
                 .verifyRecordExists("77777");
     }
 
-    @Test(priority = 2, description = "TC02 - Verify Add Employee with Login Details (Create User Account)")
+    @Test(priority = 2, groups = {"foundation"}, description = "TC02 - Verify Add Employee with Login Details (Create User Account)")
     public void verifyEmployee_WithLoginDetails_Success() {
         String firstName = "Dev";
         String MiddleName = "Sec";
@@ -92,7 +92,7 @@ public class PIM_Employee_Test extends BaseTest {
                 .verifyRecordExists("0777");
     }
 
-    @Test(priority = 3, description = "TC03 - Verify Add Employee with Trem")
+    @Test(priority = 3, groups = {"foundation"}, description = "TC03 - Verify Add Employee with Trem")
     public void verifyEmployee_Trem() {
         String firstName = "Dev";
         String MiddleName = "Ops";

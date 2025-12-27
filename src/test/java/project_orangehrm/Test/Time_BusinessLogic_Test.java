@@ -14,7 +14,7 @@ public class Time_BusinessLogic_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private TimePage timePage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUP(){
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

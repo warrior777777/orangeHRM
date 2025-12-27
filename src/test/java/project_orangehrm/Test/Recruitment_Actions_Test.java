@@ -13,7 +13,7 @@ public class Recruitment_Actions_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private RecruitmentPage recruitmentPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -27,7 +27,7 @@ public class Recruitment_Actions_Test extends BaseTest {
                 .navigateToModule("Recruitment");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Reject Candidate Workflow")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Reject Candidate Workflow")
     public void verifyCandidate_Reject_Success() {
         String firstName = "Reject";
         String middleName = "To";

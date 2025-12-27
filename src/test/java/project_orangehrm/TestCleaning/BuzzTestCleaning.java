@@ -13,7 +13,7 @@ public class BuzzTestCleaning extends BaseTest {
     private DashboardPage dashboardPage;
     private BuzzPage buzzPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUP() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

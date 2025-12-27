@@ -13,7 +13,7 @@ public class RecruitmentTestCleaning extends BaseTest {
     private DashboardPage dashboardPage;
     private RecruitmentPage recruitmentPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUP() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

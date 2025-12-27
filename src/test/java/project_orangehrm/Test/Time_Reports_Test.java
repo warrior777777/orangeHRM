@@ -13,7 +13,7 @@ public class Time_Reports_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private TimePage timePage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

@@ -13,7 +13,7 @@ public class AdminJobTest extends BaseTest {
     private DashboardPage dashboardPage;
     private AdminPage adminPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -28,7 +28,7 @@ public class AdminJobTest extends BaseTest {
                 .navigateToModule("Admin");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Job Title Lifecycle: Create, Verify, and Delete")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Job Title Lifecycle: Create, Verify, and Delete")
     public void verifyJobTitle_Lifecycle_Success() {
         adminPage
                 .navigateToSection("Job", "Job Titles")
@@ -43,7 +43,7 @@ public class AdminJobTest extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 2, description = "TC02 - Verify validation error for empty Job Title")
+    @Test(priority = 2, groups = {"foundation"}, description = "TC02 - Verify validation error for empty Job Title")
     public void verifyJobTitle_EmptyFields_ShowError() {
         adminPage
                 .navigateToSection("Job", "Job Titles")

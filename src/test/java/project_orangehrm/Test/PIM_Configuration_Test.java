@@ -13,7 +13,7 @@ public class PIM_Configuration_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private PIMPage pimPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -36,7 +36,7 @@ public class PIM_Configuration_Test extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 2, description = "TC02 - Verify Custom Field Lifecycle: Create, Verify")
+    @Test(priority = 2 , groups = {"foundation"}, description = "TC02 - Verify Custom Field Lifecycle: Create, Verify")
     public void verifyCustomField_Lifecycle_Success() {
         String fieldName = "Automation Badge ID";
 
@@ -91,7 +91,7 @@ public class PIM_Configuration_Test extends BaseTest {
                 .verifyFieldErrorMessage("Select File", "Required");
     }
 
-    @Test(priority = 6, description = "TC06 - Verify Reporting Method Lifecycle: Create, Verify")
+    @Test(priority = 6, groups = {"foundation"}, description = "TC06 - Verify Reporting Method Lifecycle: Create, Verify")
     public void verifyReportingMethod_Lifecycle_Success() {
         String methodName = "Weekly Scrum Report";
         pimPage
@@ -144,7 +144,7 @@ public class PIM_Configuration_Test extends BaseTest {
                 .deleteSpecificValue(duplicateName);
     }
 
-    @Test(priority = 9, description = "TC09 - Verify Termination Reason Lifecycle: Create, Verify")
+    @Test(priority = 9, groups = {"foundation"}, description = "TC09 - Verify Termination Reason Lifecycle: Create, Verify")
     public void verifyTerminationReason_Lifecycle_Success() {
         String reasonName = "Better Salary Opportunity";
         pimPage

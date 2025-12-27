@@ -1,388 +1,210 @@
-name: OrangeHRM Strategic Execution Suite
+name: OrangeHRM Atomic Pro Execution
 
 on:
   push:
     branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
   workflow_dispatch:
     inputs:
       browser:
-        description: 'Browser'
-        required: false
+        description: 'Select Browser'
         default: 'chrome'
         type: choice
-        options: [chrome, firefox, edge]
+        options: [chrome, firefox]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
-permissions:
-  contents: write
-  pages: write
-  id-token: write
 
 env:
   BROWSER: ${{ github.event.inputs.browser || 'chrome' }}
   MAVEN_OPTS: "-Xmx3072m -Djava.awt.headless=true"
 
 jobs:
+  # ====================================================
+  # 1. Foundation: Seed Data (Single Machine)
+  # ====================================================
   foundation:
-    name: Foundation (Admin + PIM + Recruitment)
+    name: 1. Foundation Setup
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 45
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
       - name: Setup Xvfb
         run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
+          sudo apt-get update && sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
           echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
-      - name: Run Foundation Tests
-        timeout-minutes: 50
+      - name: Run Foundation
         run: |
           mvn test -B \
-            -Dtest="LoginTest,PIM*,Admin*,Recruitment*,!*Cleaning" \
+            -Dsurefire.suiteXmlFiles=testng.xml \
+            -Dtestnames="Foundation_Data_Seeding" \
+            -Dgroups="foundation" \
             -Dbrowser=${{ env.BROWSER }} \
-            -Dheadless=true
-           -Dmaven.test.failure.ignore=true
-        env:
-          DISPLAY: :99
+            -Dheadless=true \
+            -Dmaven.test.failure.ignore=false
 
-      - name: Cleanup Xvfb
+      - uses: actions/upload-artifact@v4
         if: always()
-        run: |
-          if [ -n "$XVFB_PID" ]; then kill $XVFB_PID 2>/dev/null || true; fi
-          pkill Xvfb || true
-
-      - name: Upload Foundation Results
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
         with:
           name: allure-results-foundation
           path: target/allure-results
-          retention-days: 5
+          retention-days: 1
 
-  operations:
-    name: Ops - ${{ matrix.name }}
+  # ====================================================
+  # 2. Regression Matrix (46 Parallel Shards) ⚡
+  # ====================================================
+  regression_matrix:
+    name: 2. ${{ matrix.shard_name }}
     needs: foundation
-    if: ${{ !cancelled() }}
+    if: success()
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15 # كل shard سيأخذ دقائق معدودة فقط
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: Time_Core
-            test_patterns: "Time_Configuration_Test,Time_Attendance_Test,Time_Timesheets_Test"
-          - name: Time_Logic
-            test_patterns: "Time_ProjectInfo_Test,Time_BusinessLogic_Test"
-          - name: Leave_Config
-            test_patterns: "Leave_Configuration_Test,Leave_Entitlements_Test,Leave_Operations_Test"
-          - name: Leave_Apply
-            test_patterns: "Leave_ApplyLeave_Test,Leave_LeaveList_Test"
-          - name: Claims
-            test_patterns: "Claim_*,!*Cleaning"
+        shard_name: [
+          # Admin
+          "Reg_Admin_Job", "Reg_Admin_Org", "Reg_Admin_Qual",
+          "Reg_Admin_Config", "Reg_Admin_Nat", "Reg_Admin_Users",
+          # PIM
+          "Reg_PIM_Config", "Reg_PIM_Emp", "Reg_PIM_Details", "Reg_PIM_Reports",
+          # Recruitment
+          "Reg_Rec_Vacancies", "Reg_Rec_E2E", "Reg_Rec_Workflow",
+          "Reg_Rec_Search", "Reg_Rec_Actions",
+          # Leave
+          "Reg_Leave_Apply", "Reg_Leave_List", "Reg_Leave_Ops",
+          "Reg_Leave_Reports", "Reg_Leave_Config", "Reg_Leave_Entitle",
+          # Time
+          "Reg_Time_Attend", "Reg_Time_Sheets", "Reg_Time_Project",
+          "Reg_Time_Logic", "Reg_Time_Reports", "Reg_Time_Config",
+          # Claim
+          "Reg_Claim_Adv", "Reg_Claim_Emp", "Reg_Claim_Ops", "Reg_Claim_Config",
+          # Performance
+          "Reg_Perf_Reviews", "Reg_Perf_MyRev", "Reg_Perf_Eval",
+          "Reg_Perf_Reports", "Reg_Perf_Config",
+          # Dashboard, Buzz, Directory, Maint
+          "Reg_Dash_Widgets", "Reg_Dash_Actions", "Reg_Dash_Adv",
+          "Reg_Buzz_Feed", "Reg_Buzz_Feat", "Reg_Directory",
+          "Reg_Maint_Auth", "Reg_Maint_Access", "Reg_Maint_Purge", "Reg_Maint_Safety"
+        ]
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
       - name: Setup Xvfb
         run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
+          sudo apt-get update && sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
           echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
-      - name: Run ${{ matrix.name }}
-        timeout-minutes: 25
+      - name: Run ${{ matrix.shard_name }}
         run: |
           mvn test -B \
-            -Dtest="${{ matrix.test_patterns }}" \
+            -Dsurefire.suiteXmlFiles=testng.xml \
+            -Dtestnames="${{ matrix.shard_name }}" \
+            -Dgroups="regression" \
             -Dbrowser=${{ env.BROWSER }} \
-            -Dheadless=true
+            -Dheadless=true \
             -Dmaven.test.failure.ignore=true
-        env:
-          DISPLAY: :99
 
-      - name: Cleanup Xvfb
+      - uses: actions/upload-artifact@v4
         if: always()
-        run: |
-          if [ -n "$XVFB_PID" ]; then kill $XVFB_PID 2>/dev/null || true; fi
-          pkill Xvfb || true
-
-      - name: Upload Ops Results
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
         with:
-          name: allure-results-ops-${{ matrix.name }}
+          name: allure-results-${{ matrix.shard_name }}
           path: target/allure-results
-          retention-days: 5
+          retention-days: 1
 
-  performance:
-    name: Perf - ${{ matrix.name }}
-    needs: foundation
-    if: ${{ !cancelled() }}
+  # ====================================================
+  # 3. Cleanup Matrix (8 Parallel Shards) 🧹
+  # ====================================================
+  cleanup_matrix:
+    name: 3. ${{ matrix.clean_shard }}
+    needs: [regression_matrix]
+    if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: Perf_Reviews
-            test_patterns: "Performance_Configuration_Test,Performance_Reviews_Test"
-          - name: Perf_Eval
-            test_patterns: "Performance_MyReviews_Test,Performance_Evaluation_Test"
-          - name: Buzz_Dash
-            test_patterns: "Buzz_*,Dashboard_Widgets_Test,!*Cleaning"
-          - name: Dash_Adv
-            test_patterns: "Dashboard_UserActions_Test,Dashboard_Advanced_Test,Directory_Test"
-          - name: All_Reports
-            test_patterns: "*_Reports_Test"
+        clean_shard: [
+          "Clean_Admin",
+          "Clean_PIM",
+          "Clean_Recruit",
+          "Clean_Time",
+          "Clean_Perf",
+          "Clean_Claim",
+          "Clean_Buzz"
+        ]
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
       - name: Setup Xvfb
         run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
+          sudo apt-get update && sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
           echo "XVFB_PID=$!" >> $GITHUB_ENV
           export DISPLAY=:99
 
-      - name: Run ${{ matrix.name }}
-        timeout-minutes: 25
+      - name: Run Cleanup
         run: |
           mvn test -B \
-            -Dtest="${{ matrix.test_patterns }}" \
+            -Dsurefire.suiteXmlFiles=testng.xml \
+            -Dtestnames="${{ matrix.clean_shard }}" \
             -Dbrowser=${{ env.BROWSER }} \
-            -Dheadless=true
+            -Dheadless=true \
             -Dmaven.test.failure.ignore=true
-        env:
-          DISPLAY: :99
 
-      - name: Cleanup Xvfb
+      - uses: actions/upload-artifact@v4
         if: always()
-        run: |
-          if [ -n "$XVFB_PID" ]; then kill $XVFB_PID 2>/dev/null || true; fi
-          pkill Xvfb || true
-
-      - name: Upload Perf Results
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
         with:
-          name: allure-results-perf-${{ matrix.name }}
+          name: allure-results-${{ matrix.clean_shard }}
           path: target/allure-results
-          retention-days: 5
+          retention-days: 1
 
-  maintenance:
-    name: Maint - ${{ matrix.name }}
-    needs: [operations, performance]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Auth_Records
-            test_patterns: "Maintenance_Authentication_Test,Maintenance_AccessRecords_Test"
-          - name: Safety_Purge
-            test_patterns: "Maintenance_Safety_Test,Maintenance_PurgeRecords_Test"
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Setup Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
-          echo "XVFB_PID=$!" >> $GITHUB_ENV
-          export DISPLAY=:99
-
-      - name: Run ${{ matrix.name }}
-        timeout-minutes: 20
-        run: |
-          mvn test -B \
-            -Dtest="${{ matrix.test_patterns }}" \
-            -Dbrowser=${{ env.BROWSER }} \
-            -Dheadless=true
-            -Dmaven.test.failure.ignore=true
-        env:
-          DISPLAY: :99
-
-      - name: Cleanup Xvfb
-        if: always()
-        run: |
-          if [ -n "$XVFB_PID" ]; then kill $XVFB_PID 2>/dev/null || true; fi
-          pkill Xvfb || true
-
-      - name: Upload Maint Results
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-maint-${{ matrix.name }}
-          path: target/allure-results
-          retention-days: 5
-
-  cleanup:
-    name: Clean - ${{ matrix.name }}
-    needs: [operations, performance, maintenance]
-    if: success() || failure()
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Admin_PIM
-            test_patterns: "AdminTestCleaning,PIMTestCleaning"
-          - name: Recruit_Perf
-            test_patterns: "RecruitmentTestCleaning,PerformanceTestCleaning"
-          - name: Others
-            test_patterns: "ClaimTestCleaning,BuzzTestCleaning,TimeTestCleaning"
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Setup Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
-          echo "XVFB_PID=$!" >> $GITHUB_ENV
-          export DISPLAY=:99
-
-      - name: Run ${{ matrix.name }}
-        timeout-minutes: 15
-        run: |
-          mvn test -B \
-            -Dtest="${{ matrix.test_patterns }}" \
-            -Dbrowser=${{ env.BROWSER }} \
-            -Dheadless=true
-            -Dmaven.test.failure.ignore=true
-        env:
-          DISPLAY: :99
-
-      - name: Cleanup Xvfb
-        if: always()
-        run: |
-          if [ -n "$XVFB_PID" ]; then kill $XVFB_PID 2>/dev/null || true; fi
-          pkill Xvfb || true
-
-      - name: Upload Cleanup Results
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-clean-${{ matrix.name }}
-          path: target/allure-results
-          retention-days: 5
-
+  # ====================================================
+  # 4. Final Report
+  # ====================================================
   report:
-    name: Generate Report
-    needs: [foundation, operations, performance, maintenance, cleanup]
-    if: success() || failure()
+    name: Generate Final Report
+    needs: [foundation, regression_matrix, cleanup_matrix]
+    if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Download All Results
-        uses: actions/download-artifact@v4
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
         with:
-          path: all-results
           pattern: allure-results-*
+          path: all-results
           merge-multiple: true
-
-      - name: Download Allure History
-        uses: actions/checkout@v4
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Prepare Results for Generation
-        timeout-minutes: 5
-        run: |
-          mkdir -p target/allure-results
-          cp -r all-results/* target/allure-results/
-          if [ -d "gh-pages/history" ]; then
-            cp -r gh-pages/history target/allure-results/
-          fi
-          rm -f target/allure-results/executor.json
 
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
-        if: success() || failure()
+        if: always()
         with:
-          allure_results: target/allure-results
+          allure_results: all-results
           allure_history: gh-pages
           keep_reports: 30
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Report
         uses: peaceiris/actions-gh-pages@v3
-        if: success() || failure()
+        if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
-
-      - name: Job Summary
-        if: success() || failure()
-        run: |
-          echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Foundation | ${{ needs.foundation.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Operations | ${{ needs.operations.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Performance | ${{ needs.performance.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Maintenance | ${{ needs.maintenance.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Cleanup | ${{ needs.cleanup.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Allure Report:** [View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)" >> $GITHUB_STEP_SUMMARY

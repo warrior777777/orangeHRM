@@ -13,7 +13,7 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private RecruitmentPage recruitmentPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -27,7 +27,7 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
                 .navigateToModule("Recruitment");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Add Candidate with All Fields")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Add Candidate with All Fields")
     public void verifyCandidate_Add_Success() {
         String firstName = "Workflow";
         String lastName = "Candidate";
@@ -71,7 +71,7 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
                 .verifyErrorToast();
     }
 
-    @Test(priority = 4, description = "TC04 - Verify Schedule Interview")
+    @Test(priority = 4, groups = {"foundation"}, description = "TC04 - Verify Schedule Interview")
     public void verifyCandidate_ScheduleInterview_Success() {
         recruitmentPage
                 .navigateToSection("Candidates")
@@ -104,7 +104,7 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
                 .verifyFieldErrorMessage("Date", "Required");
     }
 
-    @Test(priority = 6, description = "TC06 - Verify Mark Interview Passed")
+    @Test(priority = 6, groups = {"foundation"}, description = "TC06 - Verify Mark Interview Passed")
     public void verifyCandidate_MarkInterviewPassed_Success() {
         recruitmentPage
                 .navigateToSection("Candidates")
@@ -150,7 +150,7 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
                 .verifySuccessMessage();
     }
 
-    @Test(priority = 8, description = "TC08 - Verify Offer Job")
+    @Test(priority = 8, groups = {"foundation"}, description = "TC08 - Verify Offer Job")
     public void verifyCandidate_OfferJob_Success() {
         recruitmentPage
                 .navigateToSection("Candidates")
@@ -187,7 +187,7 @@ public class Recruitment_CandidateWorkflow_Test extends BaseTest {
         recruitmentPage
                 .navigateToSection("Candidates")
                 .clickToAdd()
-                .typeInDynamicNameFiled("Full Name", "Firs tName", firstName)
+                .typeInDynamicNameFiled("Full Name", "First tName", firstName)
                 .typeInDynamicNameFiled("Full Name", "Last Name", lastName)
                 .typeInDynamicField("Email", email)
                 .clickSave()

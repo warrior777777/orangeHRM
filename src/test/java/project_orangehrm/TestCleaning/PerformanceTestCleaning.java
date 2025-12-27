@@ -13,7 +13,7 @@ public class PerformanceTestCleaning extends BaseTest {
     private DashboardPage dashboardPage;
     private PerformancePage performancePage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUP() {
 
         loginPage = new LoginPage(driver);

@@ -1,151 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="OrangeHRM_Strategic_Suite" verbose="1">
+<suite name="OrangeHRM_Atomic_Pro_Suite" verbose="1">
 
-    <parameter name="browser" value="edge"/>
+    <parameter name="browser" value="chrome"/>
 
-    <test name="Step1_Hyper_Admin_PIM_Foundation" preserve-order="true">
+    <test name="Foundation_Data_Seeding" preserve-order="true">
+        <groups>
+            <run><include name="foundation"/></run>
+        </groups>
         <classes>
             <class name="project_orangehrm.Test.LoginTest"/>
-            <class name="project_orangehrm.Test.PIM_Employee_Test"/>
             <class name="project_orangehrm.Test.AdminJobTest"/>
             <class name="project_orangehrm.Test.AdminOrganizationTest"/>
             <class name="project_orangehrm.Test.Admin_Qualifications_Test"/>
-            <class name="project_orangehrm.Test.Admin_Configuration_Test"/>
-            <class name="project_orangehrm.Test.Admin_Nationalities_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step2_PIM_User_Foundation" preserve-order="true">
-        <classes>
-            <class name="project_orangehrm.Test.PIM_Configuration_Test"/>
-            <class name="project_orangehrm.Test.PIM_EmployeeDetails_Test"/>
+            <class name="project_orangehrm.Test.PIM_Employee_Test"/>
             <class name="project_orangehrm.Test.AdminUserManagementTest"/>
-        </classes>
-    </test>
-
-    <test name="Step3_Recruitment" preserve-order="true">
-        <classes>
-            <class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_Candidate_E2E_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_CandidateWorkflow_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_Search_And_Data_Test"/>
-            <class name="project_orangehrm.Test.Recruitment_Actions_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step4_Ops_Time_Core" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Time_Configuration_Test"/>
-            <class name="project_orangehrm.Test.Time_Attendance_Test"/>
-            <class name="project_orangehrm.Test.Time_Timesheets_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step4_Ops_Time_Logic" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Time_ProjectInfo_Test"/>
-            <class name="project_orangehrm.Test.Time_BusinessLogic_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step4_Ops_Leave_Config" parallel="classes" thread-count="2">
-        <classes>
             <class name="project_orangehrm.Test.Leave_Configuration_Test"/>
             <class name="project_orangehrm.Test.Leave_Entitlements_Test"/>
-            <class name="project_orangehrm.Test.Leave_Operations_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step4_Ops_Leave_Apply" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Leave_ApplyLeave_Test"/>
-            <class name="project_orangehrm.Test.Leave_LeaveList_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step4_Ops_Claims" parallel="classes" thread-count="3">
-        <classes>
             <class name="project_orangehrm.Test.Claim_Configuration_Test"/>
-            <class name="project_orangehrm.Test.Claim_Operations_Test"/>
-            <class name="project_orangehrm.Test.Claim_Advanced_Test"/>
-            <class name="project_orangehrm.Test.Claim_EmployeeClaims_Test"/>
-        </classes>
-    </test>
-
-    <test name="Step5_Perf_Reviews" parallel="classes" thread-count="2">
-        <classes>
+            <class name="project_orangehrm.Test.Time_ProjectInfo_Test"/>
+            <class name="project_orangehrm.Test.Time_Configuration_Test"/>
             <class name="project_orangehrm.Test.Performance_Configuration_Test"/>
-            <class name="project_orangehrm.Test.Performance_Reviews_Test"/>
+            <class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/>
         </classes>
     </test>
 
-    <test name="Step5_Perf_Evaluation" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Performance_MyReviews_Test"/>
-            <class name="project_orangehrm.Test.Performance_Evaluation_Test"/>
-        </classes>
-    </test>
+    <test name="Reg_Admin_Job"><classes><class name="project_orangehrm.Test.AdminJobTest"/></classes></test>
+    <test name="Reg_Admin_Org"><classes><class name="project_orangehrm.Test.AdminOrganizationTest"/></classes></test>
+    <test name="Reg_Admin_Qual"><classes><class name="project_orangehrm.Test.Admin_Qualifications_Test"/></classes></test>
+    <test name="Reg_Admin_Config"><classes><class name="project_orangehrm.Test.Admin_Configuration_Test"/></classes></test>
+    <test name="Reg_Admin_Nat"><classes><class name="project_orangehrm.Test.Admin_Nationalities_Test"/></classes></test>
+    <test name="Reg_Admin_Users"><classes><class name="project_orangehrm.Test.AdminUserManagementTest"/></classes></test>
 
-    <test name="Step5_Perf_Buzz_Dash" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Buzz_Newsfeed_Test"/>
-            <class name="project_orangehrm.Test.Buzz_Features_Test"/>
-            <class name="project_orangehrm.Test.Dashboard_Widgets_Test"/>
-        </classes>
-    </test>
+    <test name="Reg_PIM_Config"><classes><class name="project_orangehrm.Test.PIM_Configuration_Test"/></classes></test>
+    <test name="Reg_PIM_Emp"><classes><class name="project_orangehrm.Test.PIM_Employee_Test"/></classes></test>
+    <test name="Reg_PIM_Details"><classes><class name="project_orangehrm.Test.PIM_EmployeeDetails_Test"/></classes></test>
+    <test name="Reg_PIM_Reports"><classes><class name="project_orangehrm.Test.PIM_Reports_Test"/></classes></test>
 
-    <test name="Step5_Perf_Dash_Adv" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Dashboard_UserActions_Test"/>
-            <class name="project_orangehrm.Test.Dashboard_Advanced_Test"/>
-            <class name="project_orangehrm.Test.Directory_Test"/>
-        </classes>
-    </test>
+    <test name="Reg_Rec_Vacancies"><classes><class name="project_orangehrm.Test.Recruitment_Vacancies_Test"/></classes></test>
+    <test name="Reg_Rec_E2E"><classes><class name="project_orangehrm.Test.Recruitment_Candidate_E2E_Test"/></classes></test>
+    <test name="Reg_Rec_Workflow"><classes><class name="project_orangehrm.Test.Recruitment_CandidateWorkflow_Test"/></classes></test>
+    <test name="Reg_Rec_Search"><classes><class name="project_orangehrm.Test.Recruitment_Search_And_Data_Test"/></classes></test>
+    <test name="Reg_Rec_Actions"><classes><class name="project_orangehrm.Test.Recruitment_Actions_Test"/></classes></test>
 
-    <test name="Step5_Perf_Reports" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.PIM_Reports_Test"/>
-            <class name="project_orangehrm.Test.Leave_Reports_Test"/>
-            <class name="project_orangehrm.Test.Time_Reports_Test"/>
-            <class name="project_orangehrm.Test.Performance_Reports_Test"/>
-        </classes>
-    </test>
+    <test name="Reg_Leave_Apply"><classes><class name="project_orangehrm.Test.Leave_ApplyLeave_Test"/></classes></test>
+    <test name="Reg_Leave_List"><classes><class name="project_orangehrm.Test.Leave_LeaveList_Test"/></classes></test>
+    <test name="Reg_Leave_Ops"><classes><class name="project_orangehrm.Test.Leave_Operations_Test"/></classes></test>
+    <test name="Reg_Leave_Reports"><classes><class name="project_orangehrm.Test.Leave_Reports_Test"/></classes></test>
+    <test name="Reg_Leave_Config"><classes><class name="project_orangehrm.Test.Leave_Configuration_Test"/></classes></test>
+    <test name="Reg_Leave_Entitle"><classes><class name="project_orangehrm.Test.Leave_Entitlements_Test"/></classes></test>
 
-    <test name="Step6_Maintenance_Auth" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Maintenance_Authentication_Test"/>
-            <class name="project_orangehrm.Test.Maintenance_AccessRecords_Test"/>
-        </classes>
-    </test>
+    <test name="Reg_Time_Attend"><classes><class name="project_orangehrm.Test.Time_Attendance_Test"/></classes></test>
+    <test name="Reg_Time_Sheets"><classes><class name="project_orangehrm.Test.Time_Timesheets_Test"/></classes></test>
+    <test name="Reg_Time_Project"><classes><class name="project_orangehrm.Test.Time_ProjectInfo_Test"/></classes></test>
+    <test name="Reg_Time_Logic"><classes><class name="project_orangehrm.Test.Time_BusinessLogic_Test"/></classes></test>
+    <test name="Reg_Time_Reports"><classes><class name="project_orangehrm.Test.Time_Reports_Test"/></classes></test>
+    <test name="Reg_Time_Config"><classes><class name="project_orangehrm.Test.Time_Configuration_Test"/></classes></test>
 
-    <test name="Step6_Maintenance_Safety" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.Test.Maintenance_Safety_Test"/>
-            <class name="project_orangehrm.Test.Maintenance_PurgeRecords_Test"/>
-        </classes>
-    </test>
+    <test name="Reg_Claim_Adv"><classes><class name="project_orangehrm.Test.Claim_Advanced_Test"/></classes></test>
+    <test name="Reg_Claim_Emp"><classes><class name="project_orangehrm.Test.Claim_EmployeeClaims_Test"/></classes></test>
+    <test name="Reg_Claim_Ops"><classes><class name="project_orangehrm.Test.Claim_Operations_Test"/></classes></test>
+    <test name="Reg_Claim_Config"><classes><class name="project_orangehrm.Test.Claim_Configuration_Test"/></classes></test>
 
-    <test name="Step7_Clean_Admin_PIM" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.TestCleaning.AdminTestCleaning"/>
-            <class name="project_orangehrm.TestCleaning.PIMTestCleaning"/>
-        </classes>
-    </test>
+    <test name="Reg_Perf_Reviews"><classes><class name="project_orangehrm.Test.Performance_Reviews_Test"/></classes></test>
+    <test name="Reg_Perf_MyRev"><classes><class name="project_orangehrm.Test.Performance_MyReviews_Test"/></classes></test>
+    <test name="Reg_Perf_Eval"><classes><class name="project_orangehrm.Test.Performance_Evaluation_Test"/></classes></test>
+    <test name="Reg_Perf_Reports"><classes><class name="project_orangehrm.Test.Performance_Reports_Test"/></classes></test>
+    <test name="Reg_Perf_Config"><classes><class name="project_orangehrm.Test.Performance_Configuration_Test"/></classes></test>
 
-    <test name="Step7_Clean_Recruit_Perf" parallel="classes" thread-count="2">
-        <classes>
-            <class name="project_orangehrm.TestCleaning.RecruitmentTestCleaning"/>
-            <class name="project_orangehrm.TestCleaning.PerformanceTestCleaning"/>
-        </classes>
-    </test>
+    <test name="Reg_Dash_Widgets"><classes><class name="project_orangehrm.Test.Dashboard_Widgets_Test"/></classes></test>
+    <test name="Reg_Dash_Actions"><classes><class name="project_orangehrm.Test.Dashboard_UserActions_Test"/></classes></test>
+    <test name="Reg_Dash_Adv"><classes><class name="project_orangehrm.Test.Dashboard_Advanced_Test"/></classes></test>
+    <test name="Reg_Buzz_Feed"><classes><class name="project_orangehrm.Test.Buzz_Newsfeed_Test"/></classes></test>
+    <test name="Reg_Buzz_Feat"><classes><class name="project_orangehrm.Test.Buzz_Features_Test"/></classes></test>
+    <test name="Reg_Directory"><classes><class name="project_orangehrm.Test.Directory_Test"/></classes></test>
 
-    <test name="Step7_Clean_Others" parallel="classes" thread-count="3">
-        <classes>
-            <class name="project_orangehrm.TestCleaning.ClaimTestCleaning"/>
-            <class name="project_orangehrm.TestCleaning.BuzzTestCleaning"/>
-            <class name="project_orangehrm.TestCleaning.TimeTestCleaning"/>
-        </classes>
-    </test>
+    <test name="Reg_Maint_Auth"><classes><class name="project_orangehrm.Test.Maintenance_Authentication_Test"/></classes></test>
+    <test name="Reg_Maint_Access"><classes><class name="project_orangehrm.Test.Maintenance_AccessRecords_Test"/></classes></test>
+    <test name="Reg_Maint_Purge"><classes><class name="project_orangehrm.Test.Maintenance_PurgeRecords_Test"/></classes></test>
+    <test name="Reg_Maint_Safety"><classes><class name="project_orangehrm.Test.Maintenance_Safety_Test"/></classes></test>
+
+    <test name="Clean_Admin"><classes><class name="project_orangehrm.TestCleaning.AdminTestCleaning"/></classes></test>
+    <test name="Clean_PIM"><classes><class name="project_orangehrm.TestCleaning.PIMTestCleaning"/></classes></test>
+    <test name="Clean_Recruit"><classes><class name="project_orangehrm.TestCleaning.RecruitmentTestCleaning"/></classes></test>
+    <test name="Clean_Time"><classes><class name="project_orangehrm.TestCleaning.TimeTestCleaning"/></classes></test>
+    <test name="Clean_Perf"><classes><class name="project_orangehrm.TestCleaning.PerformanceTestCleaning"/></classes></test>
+    <test name="Clean_Claim"><classes><class name="project_orangehrm.TestCleaning.ClaimTestCleaning"/></classes></test>
+    <test name="Clean_Buzz"><classes><class name="project_orangehrm.TestCleaning.BuzzTestCleaning"/></classes></test>
 
 </suite>

@@ -13,7 +13,7 @@ public class ClaimTestCleaning extends BaseTest {
     private DashboardPage dashboardPage;
     private ClaimPage claimPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUP() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

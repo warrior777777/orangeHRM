@@ -13,7 +13,7 @@ public class Recruitment_Search_And_Data_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private RecruitmentPage recruitmentPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -53,7 +53,7 @@ public class Recruitment_Search_And_Data_Test extends BaseTest {
         String newEmail = "correct@test.com";
         recruitmentPage
                 .clickToAdd()
-                .typeInDynamicNameFiled("Full Name", "FirstName", "EditMe")
+                .typeInDynamicNameFiled("Full Name", "First Name", "EditMe")
                 .typeInDynamicNameFiled("Full Name", "Last Name", "User")
                 .typeInDynamicField("Email", oldEmail)
                 .clickSave()

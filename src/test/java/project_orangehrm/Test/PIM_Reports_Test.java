@@ -13,7 +13,7 @@ public class PIM_Reports_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private PIMPage pimPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -29,7 +29,7 @@ public class PIM_Reports_Test extends BaseTest {
                 .navigateToModule("PIM");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Report Lifecycle: Create, Verify")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Report Lifecycle: Create, Verify")
     public void verifyReport_Lifecycle_Success() {
         String reportName = "QA Employee Audit Report";
         pimPage

@@ -13,7 +13,7 @@ public class Directory_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private DirectoryPage directoryPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

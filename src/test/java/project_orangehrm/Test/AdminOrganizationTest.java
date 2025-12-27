@@ -13,7 +13,7 @@ public class AdminOrganizationTest extends BaseTest {
     private DashboardPage dashboardPage;
     private AdminPage adminPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -29,7 +29,7 @@ public class AdminOrganizationTest extends BaseTest {
                 .navigateToModule("Admin");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Location Lifecycle: Create, Verify in Table, and Delete")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Location Lifecycle: Create, Verify in Table")
     public void verifyLocation_Lifecycle_Success() {
         String locName = "Cairo Innovation Hub";
         String country = "Egypt";
@@ -47,10 +47,8 @@ public class AdminOrganizationTest extends BaseTest {
                 .verifySuccessToast();
         adminPage
                 .typeInDynamicField("Name", locName)
-                .searchUser();
-        adminPage
-                .deleteSpecificValue(locName)
-                .verifySuccessMessage();
+                .searchUser()
+                .verifyRecordExists(locName);
     }
 
     @Test(priority = 2, description = "TC02 - Verify updating an existing Location")

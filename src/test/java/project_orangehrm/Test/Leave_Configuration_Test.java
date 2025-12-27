@@ -7,13 +7,13 @@ import project_orangehrm.Pages.DashboardPage;
 import project_orangehrm.Pages.LeavePage;
 import project_orangehrm.Pages.LoginPage;
 
-public class Leave_Configuration_Test extends BaseTest {
+public class    Leave_Configuration_Test extends BaseTest {
 
     private LoginPage loginPage;
     private DashboardPage dashboardPage;
     private LeavePage leavePage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -29,7 +29,7 @@ public class Leave_Configuration_Test extends BaseTest {
                 .navigateToModule("Leave");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Leave Type Lifecycle: Create, Verify, Delete")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Leave Type Lifecycle: Create, Verify, Delete")
     public void verifyLeaveType_Lifecycle_Success() {
         String typeName = "Casual Leave - Test";
 

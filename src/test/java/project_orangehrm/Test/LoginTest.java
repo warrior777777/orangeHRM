@@ -11,7 +11,7 @@ public class LoginTest extends BaseTest {
     private LoginPage loginPage;
     private DashboardPage dashboardPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

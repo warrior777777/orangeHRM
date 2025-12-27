@@ -13,7 +13,7 @@ public class Admin_Configuration_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private AdminPage adminPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

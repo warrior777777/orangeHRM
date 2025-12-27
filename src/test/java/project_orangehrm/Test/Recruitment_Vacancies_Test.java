@@ -13,7 +13,7 @@ public class Recruitment_Vacancies_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private RecruitmentPage recruitmentPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -27,7 +27,7 @@ public class Recruitment_Vacancies_Test extends BaseTest {
                 .navigateToModule("Recruitment");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Vacancy Lifecycle: Create, Verify, Delete")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Vacancy Lifecycle: Create, Verify")
     public void verifyVacancy_Lifecycle_Success() {
         String vacancyName = "Senior Java SDET";
         String jobTitle = "QA Engineer";

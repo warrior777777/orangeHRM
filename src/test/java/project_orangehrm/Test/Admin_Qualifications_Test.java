@@ -13,7 +13,7 @@ public class Admin_Qualifications_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private AdminPage adminPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -27,7 +27,7 @@ public class Admin_Qualifications_Test extends BaseTest {
                 .navigateToModule("Admin");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Skill Lifecycle: Create")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - Verify Skill Lifecycle: Create")
     public void verifySkills_Lifecycle_Success() {
         String skillName = "Java Automation";
         adminPage

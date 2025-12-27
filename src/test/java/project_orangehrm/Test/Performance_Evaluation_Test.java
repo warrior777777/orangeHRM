@@ -13,7 +13,7 @@ public class Performance_Evaluation_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private PerformancePage performancePage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);

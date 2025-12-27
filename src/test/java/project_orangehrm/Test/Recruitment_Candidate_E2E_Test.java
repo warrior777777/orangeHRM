@@ -13,7 +13,7 @@ public class Recruitment_Candidate_E2E_Test extends BaseTest {
     private DashboardPage dashboardPage;
     private RecruitmentPage recruitmentPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
@@ -27,7 +27,7 @@ public class Recruitment_Candidate_E2E_Test extends BaseTest {
                 .navigateToModule("Recruitment");
     }
 
-    @Test(priority = 1, description = "TC01 - E2E Hiring Flow: Add -> Shortlist -> Interview -> Offer -> Hire")
+    @Test(priority = 1, groups = {"foundation"}, description = "TC01 - E2E Hiring Flow: Add -> Shortlist -> Interview -> Offer -> Hire")
     public void verifyCandidate_FullHiring_Flow() {
         String firstName = "E2E";
         String lastName = "Candidate";

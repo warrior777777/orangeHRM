@@ -13,7 +13,7 @@ public class AdminTestCleaning extends BaseTest {
     private DashboardPage dashboardPage;
     private AdminPage adminPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUP() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
