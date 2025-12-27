@@ -68,6 +68,12 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>project_orangehrm.Listeners.SimpleListener</value>
+                        </property>
+                    </properties>
                 </configuration>
             </plugin>
             <plugin>
