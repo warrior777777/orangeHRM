@@ -25,7 +25,7 @@ public class BaseTest {
         return tlDriver.get();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     @Parameters({"browser"})
     public void setUp(@Optional("edge") String browser) {
         WebDriver currentDriver;
