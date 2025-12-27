@@ -9,7 +9,7 @@ on:
         description: 'Select Browser'
         default: 'edge'
         type: choice
-        options: [chrome,edge , firefox]
+        options: [chrome, edge, firefox]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,10 +21,10 @@ env:
 
 jobs:
   foundation:
-    name: 1. Foundation Setup
+    name: 1. Foundation Setup (Sequential)
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -34,7 +34,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
       - name: Setup Xvfb
         run: |
           sudo apt-get update && sudo apt-get install -y xvfb
@@ -42,11 +41,10 @@ jobs:
           echo "XVFB_PID=$!" >> $GITHUB_ENV
           echo "DISPLAY=:99" >> $GITHUB_ENV
 
-      - name: Run Foundation
+      - name: Run Foundation Tests (Sequential Execution)
         run: |
           mvn test -B \
-            -Dsurefire.suiteXmlFiles=testng.xml \
-            -Dtestnames="Foundation_Data_Seeding" \
+            -Dtest="LoginTest,AdminJobTest,AdminOrganizationTest,Admin_Qualifications_Test,PIM_Employee_Test,AdminUserManagementTest,Leave_Configuration_Test,Leave_Entitlements_Test,Claim_Configuration_Test,Time_ProjectInfo_Test,Time_Configuration_Test,Performance_Configuration_Test,Recruitment_Vacancies_Test" \
             -Dgroups="foundation" \
             -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true \
@@ -61,7 +59,7 @@ jobs:
           retention-days: 3
 
   regression_matrix:
-    name: 2. ${{ matrix.shard_name }}
+    name: 2. Regression - ${{ matrix.test_info.name }}
     needs: foundation
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
@@ -69,35 +67,66 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard_name: [
+        test_info:
+          - { name: "Admin_Job", class: "AdminJobTest" }
+          - { name: "Admin_Org", class: "AdminOrganizationTest" }
+          - { name: "Admin_Qual", class: "Admin_Qualifications_Test" }
+          - { name: "Admin_Config", class: "Admin_Configuration_Test" }
+          - { name: "Admin_Nat", class: "Admin_Nationalities_Test" }
+          - { name: "Admin_Users", class: "AdminUserManagementTest" }
 
-          "Reg_Admin_Job", "Reg_Admin_Org", "Reg_Admin_Qual",
-          "Reg_Admin_Config", "Reg_Admin_Nat", "Reg_Admin_Users",
+          - { name: "PIM_Config", class: "PIM_Configuration_Test" }
+          - { name: "PIM_Emp", class: "PIM_Employee_Test" }
+          - { name: "PIM_Details", class: "PIM_EmployeeDetails_Test" }
+          - { name: "PIM_Reports", class: "PIM_Reports_Test" }
 
-          "Reg_PIM_Config", "Reg_PIM_Emp", "Reg_PIM_Details", "Reg_PIM_Reports",
+          - { name: "Rec_Vacancies", class: "Recruitment_Vacancies_Test" }
+          - { name: "Rec_E2E", class: "Recruitment_Candidate_E2E_Test" }
+          - { name: "Rec_Workflow", class: "Recruitment_CandidateWorkflow_Test" }
+          - { name: "Rec_Search", class: "Recruitment_Search_And_Data_Test" }
+          - { name: "Rec_Actions", class: "Recruitment_Actions_Test" }
 
-          "Reg_Rec_Vacancies", "Reg_Rec_E2E", "Reg_Rec_Workflow",
-          "Reg_Rec_Search", "Reg_Rec_Actions",
+          - { name: "Leave_Apply", class: "Leave_ApplyLeave_Test" }
+          - { name: "Leave_List", class: "Leave_LeaveList_Test" }
+          - { name: "Leave_Ops", class: "Leave_Operations_Test" }
+          - { name: "Leave_Reports", class: "Leave_Reports_Test" }
+          - { name: "Leave_Config", class: "Leave_Configuration_Test" }
+          - { name: "Leave_Entitle", class: "Leave_Entitlements_Test" }
 
-          "Reg_Leave_Apply", "Reg_Leave_List", "Reg_Leave_Ops",
-          "Reg_Leave_Reports", "Reg_Leave_Config", "Reg_Leave_Entitle",
+          - { name: "Time_Attend", class: "Time_Attendance_Test" }
+          - { name: "Time_Sheets", class: "Time_Timesheets_Test" }
+          - { name: "Time_Project", class: "Time_ProjectInfo_Test" }
+          - { name: "Time_Logic", class: "Time_BusinessLogic_Test" }
+          - { name: "Time_Reports", class: "Time_Reports_Test" }
+          - { name: "Time_Config", class: "Time_Configuration_Test" }
 
-          "Reg_Time_Attend", "Reg_Time_Sheets", "Reg_Time_Project",
-          "Reg_Time_Logic", "Reg_Time_Reports", "Reg_Time_Config",
+          - { name: "Claim_Adv", class: "Claim_Advanced_Test" }
+          - { name: "Claim_Emp", class: "Claim_EmployeeClaims_Test" }
+          - { name: "Claim_Ops", class: "Claim_Operations_Test" }
+          - { name: "Claim_Config", class: "Claim_Configuration_Test" }
 
-          "Reg_Claim_Adv", "Reg_Claim_Emp", "Reg_Claim_Ops", "Reg_Claim_Config",
+          - { name: "Perf_Reviews", class: "Performance_Reviews_Test" }
+          - { name: "Perf_MyRev", class: "Performance_MyReviews_Test" }
+          - { name: "Perf_Eval", class: "Performance_Evaluation_Test" }
+          - { name: "Perf_Reports", class: "Performance_Reports_Test" }
+          - { name: "Perf_Config", class: "Performance_Configuration_Test" }
 
-          "Reg_Perf_Reviews", "Reg_Perf_MyRev", "Reg_Perf_Eval",
-          "Reg_Perf_Reports", "Reg_Perf_Config",
+          - { name: "Dash_Widgets", class: "Dashboard_Widgets_Test" }
+          - { name: "Dash_Actions", class: "Dashboard_UserActions_Test" }
+          - { name: "Dash_Adv", class: "Dashboard_Advanced_Test" }
 
-          "Reg_Dash_Widgets", "Reg_Dash_Actions", "Reg_Dash_Adv",
-          "Reg_Buzz_Feed", "Reg_Buzz_Feat", "Reg_Directory",
-          "Reg_Maint_Auth", "Reg_Maint_Access", "Reg_Maint_Purge", "Reg_Maint_Safety"
-        ]
+          - { name: "Buzz_Feed", class: "Buzz_Newsfeed_Test" }
+          - { name: "Buzz_Feat", class: "Buzz_Features_Test" }
+
+          - { name: "Directory", class: "Directory_Test" }
+
+          - { name: "Maint_Auth", class: "Maintenance_Authentication_Test" }
+          - { name: "Maint_Access", class: "Maintenance_AccessRecords_Test" }
+          - { name: "Maint_Purge", class: "Maintenance_PurgeRecords_Test" }
+          - { name: "Maint_Safety", class: "Maintenance_Safety_Test" }
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -110,26 +139,24 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
           echo "XVFB_PID=$!" >> $GITHUB_ENV
           echo "DISPLAY=:99" >> $GITHUB_ENV
-
-      - name: Run ${{ matrix.shard_name }}
+      - name: Run Regression - ${{ matrix.test_info.name }}
         run: |
           mvn test -B \
-            -Dsurefire.suiteXmlFiles=testng.xml \
-            -Dtestnames="${{ matrix.shard_name }}" \
+            -Dtest="${{ matrix.test_info.class }}" \
+            -Dgroups="regression" \
             -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true \
             -Dmaven.test.failure.ignore=true
-
-      - name: Upload regression Results
+      - name: Upload Regression Results
         if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-regression-${{ matrix.shard_name }}
+          name: allure-results-regression-${{ matrix.test_info.name }}
           path: target/allure-results
           retention-days: 3
 
   cleanup_matrix:
-    name: Clean - ${{ matrix.clean_shard }}
+    name: 3. Cleanup - ${{ matrix.cleanup_info.name }}
     needs: [regression_matrix]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
@@ -137,15 +164,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        clean_shard: [
-          "Clean_Admin",
-          "Clean_PIM",
-          "Clean_Recruit",
-          "Clean_Time",
-          "Clean_Perf",
-          "Clean_Claim",
-          "Clean_Buzz"
-        ]
+        cleanup_info:
+          - { name: "Admin", class: "AdminTestCleaning" }
+          - { name: "PIM", class: "PIMTestCleaning" }
+          - { name: "Recruit", class: "RecruitmentTestCleaning" }
+          - { name: "Time", class: "TimeTestCleaning" }
+          - { name: "Perf", class: "PerformanceTestCleaning" }
+          - { name: "Claim", class: "ClaimTestCleaning" }
+          - { name: "Buzz", class: "BuzzTestCleaning" }
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -161,26 +187,23 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
           echo "XVFB_PID=$!" >> $GITHUB_ENV
           echo "DISPLAY=:99" >> $GITHUB_ENV
-
-      - name: Run Cleanup
+      - name: Run Cleanup - ${{ matrix.cleanup_info.name }}
         run: |
           mvn test -B \
-            -Dsurefire.suiteXmlFiles=testng.xml \
-            -Dtestnames="${{ matrix.clean_shard }}" \
+            -Dtest="${{ matrix.cleanup_info.class }}" \
             -Dbrowser=${{ env.BROWSER }} \
             -Dheadless=true \
             -Dmaven.test.failure.ignore=true
-
       - name: Upload Cleanup Results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-clean-${{ matrix.clean_shard }}
+          name: allure-results-cleanup-${{ matrix.cleanup_info.name }}
           path: target/allure-results
           retention-days: 3
 
   report:
-    name: Generate Final Report
+    name: 4. Generate Final Report
     needs: [foundation, regression_matrix, cleanup_matrix]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
@@ -194,14 +217,12 @@ jobs:
           path: all-results
           pattern: allure-results-*
           merge-multiple: true
-
       - name: Download Allure History
         uses: actions/checkout@v4
         continue-on-error: true
         with:
           ref: gh-pages
           path: gh-pages
-
       - name: Prepare Results for Generation
         timeout-minutes: 5
         run: |
@@ -211,7 +232,6 @@ jobs:
             cp -r gh-pages/history target/allure-results/
           fi
           rm -f target/allure-results/executor.json
-
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
         if: ${{ !cancelled() }}
@@ -219,7 +239,6 @@ jobs:
           allure_results: target/allure-results
           allure_history: gh-pages
           keep_reports: 30
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ !cancelled() }}
@@ -227,7 +246,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-report
-
       - name: Job Summary
         if: success() || failure()
         run: |
@@ -239,4 +257,4 @@ jobs:
           echo "| Regression | ${{ needs.regression_matrix.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Cleanup | ${{ needs.cleanup_matrix.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Allure Report:** [View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)" >> $GITHUB_STEP_SUMMARY
+          echo "**Allure Report:** [View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)** >> $GITHUB_STEP_SUMMARY

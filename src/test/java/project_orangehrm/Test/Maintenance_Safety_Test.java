@@ -27,7 +27,7 @@ public class Maintenance_Safety_Test extends BaseTest {
                 .navigateToModule("Maintenance");
     }
 
-    @Test(priority = 1, description = "TC01 - Verify Cancel Button on Password Screen")
+    @Test(priority = 1, groups = {"regression"}, description = "TC01 - Verify Cancel Button on Password Screen")
     public void verifyAccess_Cancel_Redirection() {
         maintenancePage
                 .clickCancelPassword();
@@ -35,7 +35,7 @@ public class Maintenance_Safety_Test extends BaseTest {
                 .verifyDashboard("Dashboard");
     }
 
-    @Test(priority = 2, description = "TC02 - Verify Canceling Purge Action in Modal")
+    @Test(priority = 2, groups = {"regression"}, description = "TC02 - Verify Canceling Purge Action in Modal")
     public void verifyPurge_Modal_Cancel() {
         String employeeName = "Terminated";
         maintenancePage
@@ -53,7 +53,7 @@ public class Maintenance_Safety_Test extends BaseTest {
                 .verifySearchTable();
     }
 
-    @Test(priority = 3, description = "TC03 - Verify Select All Checkbox")
+    @Test(priority = 3, groups = {"regression"}, description = "TC03 - Verify Select All Checkbox")
     public void verifyPurge_SelectAll_Functionality() {
         maintenancePage.verifyAccessPassword("admin123");
         maintenancePage
