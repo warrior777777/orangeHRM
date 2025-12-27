@@ -27,7 +27,7 @@ public class BaseTest {
 
     @BeforeMethod(alwaysRun = true)
     @Parameters({"browser"})
-    public void setUp(@Optional("edge") String browser) {
+    public void setUp(@Optional("chrome") String browser) {
         WebDriver currentDriver;
 
         String headlessProp = System.getProperty("headless");
